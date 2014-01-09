@@ -36,11 +36,14 @@ public class Screen extends JPanel implements Runnable {
 	private int locationOrangeGhosty = 0;
 	
 	
-	private int Height = 15;
-	private int Width = 19;
-	private String [][] Array = new String[Width][Height]; //Maybe change to String array? to easier see what is going on.
+	private int Height;
+	private int Width;
+	private String [][] Array; //Maybe change to String array? to easier see what is going on.
 	
-	public Screen(Frame frame){
+	public Screen(Frame frame, int Width, int Height){
+		this.Width = Width;
+		this.Height = Height;
+		Array = new String[Width][Height];
 		this.frame = frame;
 		frame.setSize(Width * 25 + 24, Height * 25 + 48);
 		this.frame.addKeyListener(new KeyHandler(this));
