@@ -1,6 +1,5 @@
 package Pacman;
 import java.awt.Point;
-import Ghosts.*;
 
 
 public class Ghosts {
