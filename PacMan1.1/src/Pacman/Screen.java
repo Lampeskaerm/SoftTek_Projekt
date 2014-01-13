@@ -3,7 +3,7 @@ import java.awt.Point;
 
 import javax.swing.JPanel;
 
-public class Model extends JPanel implements Runnable {
+public class Screen extends JPanel implements Runnable {
 	Thread thread = new Thread(this);
 	
 	Frame frame;
@@ -30,15 +30,17 @@ public class Model extends JPanel implements Runnable {
 	public Point cyanGhostPos = new Point();
 	public Point pinkGhostPos = new Point();
 	public Point orangeGhostPos = new Point();
-	private int Height = 20;
-	private int Width = 20;
+	private int Height;
+	private int Width;
 	private String [][] Array; //Maybe change to String array? to easier see what is going on.
 	
 	View view;
 	GetLocations getLocations;
 	Ghosts ghosts;
 	
-	public Model(Frame frame){
+	public Screen(Frame frame, int Width, int Height){
+		this.Width = Width;
+		this.Height = Height;
 		Array = new String[Width][Height];
 		this.frame = frame;
 		frame.setSize(Width * 25 + 24, Height * 25 + 48);
