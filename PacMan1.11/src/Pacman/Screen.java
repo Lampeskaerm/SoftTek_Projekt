@@ -1,5 +1,6 @@
 package Pacman;
-import java.awt.Point;
+
+import java.awt.*;
 
 import javax.swing.JPanel;
 
@@ -23,6 +24,7 @@ public class Screen extends JPanel implements Runnable {
 	public boolean up = false;
 	public boolean down = false;
 	public int ghostCounter = 0;
+	public String randomMovement = "";
 	
 	//Location variables.
 	public Point pacmanPos = new Point();
@@ -30,13 +32,14 @@ public class Screen extends JPanel implements Runnable {
 	public Point cyanGhostPos = new Point();
 	public Point pinkGhostPos = new Point();
 	public Point orangeGhostPos = new Point();
+	
+	
 	private int Height;
 	private int Width;
 	private String [][] Array; //Maybe change to String array? to easier see what is going on.
 	
-	View view;
-	GetLocations getLocations;
 	Ghosts ghosts;
+	GetLocations getLocs;
 	
 	public Screen(Frame frame, int Width, int Height){
 		this.Width = Width;
@@ -46,6 +49,7 @@ public class Screen extends JPanel implements Runnable {
 		frame.setSize(Width * 25 + 24, Height * 25 + 48);
 		this.frame.addKeyListener(new KeyHandler(this));
 		thread.start();
+		
 	}
 	
 	//Creates array with correct starting strings.
@@ -66,15 +70,88 @@ public class Screen extends JPanel implements Runnable {
 		Array[Width - 2][Height - 2] = "bigPacDot";
 	}
 	
+	public void paintComponent(Graphics g){	
+
+		//if game still on.
+		if(gameState.equals("gameOn")){
+			g.setColor(Color.black);
+			g.fillRect(0, 0, this.frame.getWidth(), this.frame.getHeight());
+			//Draws the game using the array.
+			for(int i = 0; i < Width; i++){
+				for(int j = 0; j < Height; j++){
+					if(Array[i][j].equals("pacDot")){
+						g.setColor(Color.white);
+						g.fillRect(24 * i + 24, 24 * j + 24, 8, 8);
+					}else if(Array[i][j].equals("pacMan")){
+						g.setColor(Color.yellow);
+						g.fillOval(24 * i + 18, 24 * j + 18, 20, 20);
+					}else if(Array[i][j].equals("redGhostAndPacDot")){
+						g.setColor(Color.red);
+						g.fillOval(24 * i + 18, 24 * j + 18, 20, 20);
+					}else if(Array[i][j].equals("redGhostAndBlackSpace")){
+						g.setColor(Color.red);
+						g.fillOval(24 * i + 18, 24 * j + 18, 20, 20);
+					}else if(Array[i][j].equals("cyanGhostAndPacDot")){
+						g.setColor(Color.cyan);
+						g.fillOval(24 * i + 18, 24 * j + 18, 20, 20);
+					}else if(Array[i][j].equals("cyanGhostAndBlackSpace")){
+						g.setColor(Color.cyan);
+						g.fillOval(24 * i + 18, 24 * j + 18, 20, 20);
+					}else if(Array[i][j].equals("pinkGhostAndPacDot")){
+						g.setColor(Color.pink);
+						g.fillOval(24 * i + 18, 24 * j + 18, 20, 20);
+					}else if(Array[i][j].equals("pinkGhostAndBlackSpace")){
+						g.setColor(Color.pink);
+						g.fillOval(24 * i + 18, 24 * j + 18, 20, 20);
+					}else if(Array[i][j].equals("orangeGhostAndPacDot")){
+						g.setColor(Color.orange);
+						g.fillOval(24 * i + 18, 24 * j + 18, 20, 20);
+					}else if(Array[i][j].equals("orangeGhostAndBlackSpace")){
+						g.setColor(Color.orange);
+						g.fillOval(24 * i + 18, 24 * j + 18, 20, 20);
+					}else if(Array[i][j].equals("bigPacDot")){
+						g.setColor(Color.white);
+						g.fillOval(24 * i + 19, 24 * j + 19, 16, 16);
+					}else if(Array[i][j].equals("blackSpace")){
+						g.setColor(Color.black);
+						g.fillRect(24 * i + 16, 24 * j + 16, 24, 24);
+					}
+				}
+			}
+			
+		//if game over.
+		}else if(gameState.equals("gameOver")){
+			g.setColor(Color.black);
+			g.fillRect(0, 0, this.frame.getWidth(), this.frame.getHeight());
+			g.setColor(Color.green);
+			Font font = new Font("Arial", Font.BOLD, 30);
+			g.setFont(font);
+			g.drawString("GAMEOVER!", 100, 50);
+			g.drawString("PRESS SPACE", 90, 150);
+			g.drawString("TO RESTART!", 95, 200);
+			g.drawString("ESC TO EXIT", 100, 300);
+		
+		//If game is won.
+		}else if (gameState.equals("gameWon")){
+			g.setColor(Color.black);
+			g.fillRect(0, 0, this.frame.getWidth(), this.frame.getHeight());
+			g.setColor(Color.green);
+			Font font = new Font("Arial", Font.BOLD, 30);
+			g.setFont(font);
+			g.drawString("GAME WON!", 100, 50);
+			g.drawString("PRESS SPACE", 90, 150);
+			g.drawString("TO RESTART!", 95, 200);
+			g.drawString("ESC TO EXIT", 100, 300);
+		}
+	}
+	
 	public void run() {
 		
 		//Goes once:
 		restartGameArray();
-		view = new View(Array, gameState, frame, Width, Height);
-		getLocations = new GetLocations(Array, Width, Height, pacmanPos, redGhostPos, cyanGhostPos, pinkGhostPos, orangeGhostPos);
 		ghosts = new Ghosts(Array, Width, Height, pacmanPos, redGhostPos, cyanGhostPos, pinkGhostPos, orangeGhostPos, godMode, gameState);
-		frame.getContentPane().add(view);
-		getLocations.getLocationPacMan();
+		getLocs = new GetLocations(Array, Width, Height, pacmanPos, redGhostPos, cyanGhostPos, pinkGhostPos, orangeGhostPos);
+		getLocs.getLocationPacMan();
 		running = true;
 	
 		
@@ -84,7 +161,7 @@ public class Screen extends JPanel implements Runnable {
 			//movements:
 			//Move right.
 			while(right){
-				getLocations.getLocationPacMan();
+				getLocs.getLocationPacMan();
 				if(pacmanPos.x < Width - 1){
 					if(Array[pacmanPos.x + 1][pacmanPos.y].equals("bigPacDot")){
 						godMode = true;
@@ -100,7 +177,7 @@ public class Screen extends JPanel implements Runnable {
 			
 			//Move left.
 			while(left){
-				getLocations.getLocationPacMan();
+				getLocs.getLocationPacMan();
 				if(pacmanPos.x > 0){
 					if(Array[pacmanPos.x - 1][pacmanPos.y].equals("bigPacDot")){
 						godMode = true;
@@ -117,7 +194,7 @@ public class Screen extends JPanel implements Runnable {
 			
 			//Move up.
 			while(up){
-				getLocations.getLocationPacMan();
+				getLocs.getLocationPacMan();
 				if(pacmanPos.y > 0){
 					if(Array[pacmanPos.x][pacmanPos.y - 1].equals("bigPacDot")){
 						godMode = true;
@@ -134,7 +211,7 @@ public class Screen extends JPanel implements Runnable {
 			
 			//move down.
 			while(down){
-				getLocations.getLocationPacMan();
+				getLocs.getLocationPacMan();
 				if(pacmanPos.y < Height - 1){
 					if(Array[pacmanPos.x][pacmanPos.y + 1].equals("bigPacDot")){
 						godMode = true;
@@ -170,51 +247,51 @@ public class Screen extends JPanel implements Runnable {
 			
 			//Checks for collision with ghosts, gameover if this happends.
 			if(!godMode){
-				getLocations.getLocationPacMan();
-				getLocations.getLocationRedGhost();
+				getLocs.getLocationPacMan();
+				getLocs.getLocationRedGhost();
 				if(pacmanPos.x == redGhostPos.x && pacmanPos.y == redGhostPos.y){
 					gameState = "gameOver";
 				}
 			
-				getLocations.getLocationCyanGhost();
+				getLocs.getLocationCyanGhost();
 				if(pacmanPos.x == cyanGhostPos.x && pacmanPos.y == cyanGhostPos.y){
 					gameState =  "gameOver";
 				}
 			
-				getLocations.getLocationPinkGhost();
+				getLocs.getLocationPinkGhost();
 				if(pacmanPos.x == pinkGhostPos.x && pacmanPos.y == pinkGhostPos.y){
 					gameState =  "gameOver";
 				}
 			
-				getLocations.getLocationOrangeGhost();
+				getLocs.getLocationOrangeGhost();
 				if(pacmanPos.x == orangeGhostPos.x && pacmanPos.y == orangeGhostPos.y){
 					gameState =  "gameOver";
 				}
 			}
 			if(godMode == true){
-				getLocations.getLocationPacMan();
-				getLocations.getLocationRedGhost();
+				getLocs.getLocationPacMan();
+				getLocs.getLocationRedGhost();
 				if(pacmanPos.x == redGhostPos.x && pacmanPos.y == redGhostPos.y){
 					Array[(int)(Width / 2)][(int)(Height / 2 - 1)] = "redGhostAndBlackSpace";
-					getLocations.getLocationRedGhost();
+					getLocs.getLocationRedGhost();
 				}
 				
-				getLocations.getLocationCyanGhost();
+				getLocs.getLocationCyanGhost();
 				if(pacmanPos.x == cyanGhostPos.x && pacmanPos.y == cyanGhostPos.y){
 					Array[(int)(Width / 2 - 1)][(int)(Height / 2)] = "cyanGhostAndBlackSpace";
-					getLocations.getLocationCyanGhost();
+					getLocs.getLocationCyanGhost();
 				}
 				
-				getLocations.getLocationPinkGhost();
+				getLocs.getLocationPinkGhost();
 				if(pacmanPos.x == pinkGhostPos.x && pacmanPos.y == pinkGhostPos.y){
 					Array[(int)(Width / 2)][(int)(Height / 2)] = "pinkGhostAndBlackSpace";
-					getLocations.getLocationPinkGhost();
+					getLocs.getLocationPinkGhost();
 				}
 				
-				getLocations.getLocationOrangeGhost();
+				getLocs.getLocationOrangeGhost();
 				if(pacmanPos.x == orangeGhostPos.x && pacmanPos.y == orangeGhostPos.y){
 					Array[(int)(Width / 2 + 1)][(int)(Height / 2)] = "orangeGhostAndBlackSpace";
-					getLocations.getLocationOrangeGhost();
+					getLocs.getLocationOrangeGhost();
 				}
 				
 			}
@@ -236,24 +313,7 @@ public class Screen extends JPanel implements Runnable {
 					godModeCounter = 0;
 				}
 			}
-			
-			//update screen variables
-			pacmanPos = getLocations.pacmanPos;
-			redGhostPos = getLocations.redGhostPos;
-			cyanGhostPos = getLocations.cyanGhostPos;
-			pinkGhostPos = getLocations.pinkGhostPos;
-			orangeGhostPos = getLocations.orangeGhostPos;
-			if(ghosts.gameState == "gameOver"){
-				gameState = ghosts.gameState;
-			}
-			
-			//update other class variables
-			view.gameState = gameState;
-			ghosts.godMode = godMode;
-			getLocations.Array = Array;
-			ghosts.Array = Array;
-
-			
+						
 			//update graphics.
 			frame.getContentPane().repaint();
 			
@@ -293,5 +353,5 @@ public class Screen extends JPanel implements Runnable {
 		public void KeyEnter(){
 			enter = true;
 		}
-	}
+	}	
 }

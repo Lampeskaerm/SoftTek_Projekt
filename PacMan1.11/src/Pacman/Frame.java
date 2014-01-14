@@ -1,4 +1,5 @@
 package Pacman;
+
 import java.util.Scanner;
 import javax.swing.JFrame;
 
@@ -19,7 +20,7 @@ public class Frame extends JFrame{
 		this.setResizable(false);
 		this.setVisible(true);
 		
-		Model screen = new Model(this, Width, Height);
+		Screen screen = new Screen(this, Width, Height);
 		this.add(screen);
 	
 	}
