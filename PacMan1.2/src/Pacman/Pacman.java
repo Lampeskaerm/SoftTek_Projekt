@@ -9,17 +9,18 @@ public class Pacman {
 	String[][] Array;
 	boolean godMode, right, left, up, down;
 	int Width, Height;
+	int godModeCounter = 0;
 	
-	public Pacman (String[][] Array, int Width, int Height, boolean godMode, Point pacmanPos){
+	public Pacman (String[][] Array, int Width, int Height, Point pacmanPos, boolean godMode){
 		this.pacmanPos = pacmanPos;
 		this.Array = Array;
 		this.godMode = godMode;
 		this.Width = Width;
 		this.Height = Height;
-		this.right = right;
-		this.left = left;
-		this.up = up;
-		this.down = down;
+//		this.right = right;
+//		this.left = left;
+//		this.up = up;
+//		this.down = down;
 		
 		pacmanLoc = new PacmanLocation(Array, Width, Height, pacmanPos);
 	}
@@ -218,6 +219,15 @@ public class Pacman {
                     down = false; 
                     } 
                 } 
+            } 
+        }
+        
+        //Check god mode and increment god mode counter. 
+        if(godMode){ 
+            godModeCounter++; 
+            if(godModeCounter == 500){ 
+                godMode = false; 
+                godModeCounter = 0; 
             } 
         }
 	}

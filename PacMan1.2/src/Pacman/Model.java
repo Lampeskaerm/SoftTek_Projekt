@@ -15,7 +15,6 @@ public class Model extends JPanel implements Runnable {
 	public boolean lowerLeftBigPacDot = false;
 	public boolean lowerRightBigPacDot = false;
 	public boolean godMode = false;
-	int godModeCounter = 0;
 	boolean redPresent = false; 
     boolean cyanPresent = false; 
     boolean pinkPresent = false; 
@@ -62,7 +61,7 @@ public class Model extends JPanel implements Runnable {
 		this.Array = gameArray.Array;
 		view = new View(Array, gameState, frame, Width, Height, lives, godMode);
 		frame.getContentPane().add(view);
-		pacman = new Pacman(Array, Width, Height, godMode, pacmanPos);
+		pacman = new Pacman(Array, Width, Height, pacmanPos, godMode);
 		getLocations = new GetLocations(Array, Width, Height, pacmanPos, redGhostPos, cyanGhostPos, pinkGhostPos, orangeGhostPos);
 		ghosts = new Ghosts(Array, Width, Height, pacmanPos, redGhostPos, cyanGhostPos, pinkGhostPos, orangeGhostPos, godMode, gameState);
 		getLocations.getLocationPacMan();
@@ -105,23 +104,14 @@ public class Model extends JPanel implements Runnable {
                 this.Array = gameArray.Array;
                 lives = 3; 
                 enter = false; 
-            } 
-  
-              
-            //Check god mode and increment god mode counter. 
-            if(godMode){ 
-                godModeCounter++; 
-                if(godModeCounter == 500){ 
-                    godMode = false; 
-                    godModeCounter = 0; 
-                } 
-            } 
+            }
               
             if(lives <= 0){ 
                 gameState = "gameOver"; 
             }
 			
 			//update screen variables
+            this.godMode = pacman.godMode;
 			this.pacmanPos = getLocations.pacmanPos;
 			this.redGhostPos = getLocations.redGhostPos;
 			this.cyanGhostPos = getLocations.cyanGhostPos;

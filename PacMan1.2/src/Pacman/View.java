@@ -13,6 +13,7 @@ public class View extends JPanel{
 	int Width, Height, lives;
 	boolean godMode;
 	
+	
 	public View(String[][] Array, String gameState, Frame frame, int Width, int Height, int lives, boolean godMode){
 		this.Array = Array;
 		this.gameState = gameState;
