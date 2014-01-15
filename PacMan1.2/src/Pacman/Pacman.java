@@ -8,19 +8,16 @@ public class Pacman {
 	Point pacmanPos;
 	String[][] Array;
 	boolean godMode, right, left, up, down;
-	int Width, Height;
+	int Width, Height, lives;
 	int godModeCounter = 0;
 	
-	public Pacman (String[][] Array, int Width, int Height, Point pacmanPos, boolean godMode){
+	public Pacman (String[][] Array, int Width, int Height, Point pacmanPos, boolean godMode, int lives){
 		this.pacmanPos = pacmanPos;
 		this.Array = Array;
 		this.godMode = godMode;
 		this.Width = Width;
 		this.Height = Height;
-//		this.right = right;
-//		this.left = left;
-//		this.up = up;
-//		this.down = down;
+		this.lives = lives;
 		
 		pacmanLoc = new PacmanLocation(Array, Width, Height, pacmanPos);
 	}
@@ -232,7 +229,8 @@ public class Pacman {
         }
 	}
 	
-	public void ResetPacManAndLoseLife(){
-		
-	}
+	public void ResetPacManAndLoseLife(){ 
+        Array[12][21] = "pacMan"; 
+        lives--; 
+    } 
 }

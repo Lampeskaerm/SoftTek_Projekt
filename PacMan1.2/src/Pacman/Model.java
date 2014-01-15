@@ -61,7 +61,7 @@ public class Model extends JPanel implements Runnable {
 		this.Array = gameArray.Array;
 		view = new View(Array, gameState, frame, Width, Height, lives, godMode);
 		frame.getContentPane().add(view);
-		pacman = new Pacman(Array, Width, Height, pacmanPos, godMode);
+		pacman = new Pacman(Array, Width, Height, pacmanPos, godMode, lives);
 		getLocations = new GetLocations(Array, Width, Height, pacmanPos, redGhostPos, cyanGhostPos, pinkGhostPos, orangeGhostPos);
 		ghosts = new Ghosts(Array, Width, Height, pacmanPos, redGhostPos, cyanGhostPos, pinkGhostPos, orangeGhostPos, godMode, gameState);
 		getLocations.getLocationPacMan();
@@ -111,6 +111,7 @@ public class Model extends JPanel implements Runnable {
             }
 			
 			//update screen variables
+            this.lives = pacman.lives;
             this.godMode = pacman.godMode;
 			this.pacmanPos = getLocations.pacmanPos;
 			this.redGhostPos = getLocations.redGhostPos;
@@ -177,9 +178,4 @@ public class Model extends JPanel implements Runnable {
 			enter = true;
 		}
 	}
-	
-	public void ResetPacManAndLoseLife(){ 
-        Array[12][21] = "pacMan"; 
-        lives--; 
-    } 
 }
