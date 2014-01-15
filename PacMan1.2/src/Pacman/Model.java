@@ -99,13 +99,15 @@ public class Model extends JPanel implements Runnable {
                   
             //Make so that when the gameover or game won screen is up you can restart by pressing space 
             if(enter){ 
-                gameState = "gameOn"; 
-                gameArray.restartGameArray(); 
+                ghosts.gameState = "gameOn";
+                gameState = "gameOn";
+                lives = 3;
+                pacman.lives = 3;
+                gameArray.restartGameArray();
                 this.Array = gameArray.Array;
-                lives = 3; 
                 enter = false; 
             }
-              
+            
             if(lives <= 0){ 
                 gameState = "gameOver"; 
             }
@@ -124,9 +126,8 @@ public class Model extends JPanel implements Runnable {
 			this.left = pacman.left;
 			if(ghosts.gameState == "gameOver"){
 				this.gameState = ghosts.gameState;
-			} else {
-				ghosts.gameState = this.gameState;
 			}
+			ghosts.gameState = this.gameState;
 			
 			//update other class variables
 			view.gameState = this.gameState;
