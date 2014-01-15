@@ -1,4 +1,4 @@
-package Pacman.GhostsLocs;
+package Pacman;
 
 import java.awt.Point;
 
@@ -13,6 +13,8 @@ public class CyanGhostLocation {
 		this.Width = Width;
 		this.Height = Height;
 		this.cyanGhostPos = cyanGhostPos;
+		
+		System.out.println("cyanloc");
 	}
 
 	public void getLocation(){

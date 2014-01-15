@@ -1,4 +1,4 @@
-package Pacman.GhostsLocs;
+package Pacman;
 import java.awt.Point;
 
 
@@ -12,6 +12,8 @@ public class OrangeGhostLocation {
 		this.Width = Width;
 		this.Height = Height;
 		this.orangeGhostPos = orangeGhostPos;
+		
+		System.out.println("orangeLoc");
 	}
 
 	public void getLocation(){

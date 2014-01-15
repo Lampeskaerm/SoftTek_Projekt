@@ -1,4 +1,4 @@
-package Pacman.GhostsLocs;
+package Pacman;
 import java.awt.Point;
 
 
@@ -12,6 +12,8 @@ public class PinkGhostLocation {
 		this.Width = Width;
 		this.Height = Height;
 		this.pinkGhostPos = pinkGhostPos;
+		
+		System.out.println("pinkLoc");
 	}
 
 	public void getLocation(){

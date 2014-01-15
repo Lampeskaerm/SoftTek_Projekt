@@ -12,6 +12,8 @@ public class PacmanLocation {
 		this.Width = Width;
 		this.Height = Height;
 		this.pacmanPos = pacmanPos;
+		
+		System.out.println("Pacman");
 	}
 	//Get location functions.
 	public void getLocation(){

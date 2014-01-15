@@ -1,8 +1,6 @@
-package Pacman.GhostsFolder;
+package Pacman;
 
 import java.awt.Point;
-import Pacman.*;
-import Pacman.GhostsLocs.*;
 
 public class OrangeGhost {
 	Point pacmanPos, orangeGhostPos;

@@ -1,5 +1,4 @@
 package Pacman;
-
 import java.util.Scanner;
 import javax.swing.JFrame;
 
@@ -22,7 +21,6 @@ public class Frame extends JFrame{
 		
 		Screen screen = new Screen(this, Width, Height);
 		this.add(screen);
-	
 	}
 	
 }

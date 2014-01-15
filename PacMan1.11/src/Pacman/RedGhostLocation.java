@@ -1,4 +1,4 @@
-package Pacman.GhostsLocs;
+package Pacman;
 import java.awt.Point;
 
 
