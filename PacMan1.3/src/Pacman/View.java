@@ -2,7 +2,9 @@ package Pacman;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 
@@ -51,32 +53,15 @@ public class View extends JPanel{
                         g.setColor(Color.white); 
                         g.fillRect(18 * i + 25, 18 * j + 75, 2, 2); 
                     }else if(Array[i][j].equals("pacMan")){ 
-                        g.setColor(Color.yellow); 
-                        g.fillOval(18 * i + 20, 18 * j + 69, 14, 14); 
-                    }else if(Array[i][j].equals("redGhostAndPacDot")){ 
-                        g.setColor(Color.red); 
-                        g.fillOval(18 * i + 18, 18 * j + 68, 14, 14); 
-                    }else if(Array[i][j].equals("redGhostAndBlackSpace")){ 
-                        g.setColor(Color.red); 
-                        g.fillOval(18 * i + 18, 18 * j + 68, 14, 14); 
-                    }else if(Array[i][j].equals("cyanGhostAndPacDot")){ 
-                        g.setColor(Color.cyan); 
-                        g.fillOval(18 * i + 18, 18 * j + 68, 14, 14); 
-                    }else if(Array[i][j].equals("cyanGhostAndBlackSpace")){ 
-                        g.setColor(Color.cyan); 
-                        g.fillOval(18 * i + 18, 18 * j + 68, 14, 14); 
-                    }else if(Array[i][j].equals("pinkGhostAndPacDot")){ 
-                        g.setColor(Color.pink); 
-                        g.fillOval(18 * i + 18, 18 * j + 68, 14, 14); 
-                    }else if(Array[i][j].equals("pinkGhostAndBlackSpace")){ 
-                        g.setColor(Color.pink); 
-                        g.fillOval(18 * i + 18, 18 * j + 68, 14, 14); 
-                    }else if(Array[i][j].equals("orangeGhostAndPacDot")){ 
-                        g.setColor(Color.orange); 
-                        g.fillOval(18 * i + 18, 18 * j + 68, 14, 14); 
-                    }else if(Array[i][j].equals("orangeGhostAndBlackSpace")){ 
-                        g.setColor(Color.orange); 
-                        g.fillOval(18 * i + 18, 18 * j + 68, 14, 14); 
+                        g.drawImage(getImage("pacman_left1.png"), 18 * i + 20, 18 * j + 68, this);
+                    }else if(Array[i][j].equals("redGhostAndPacDot") || Array[i][j].equals("redGhostAndBlackSpace")){ 
+                    	g.drawImage(getImage("redGhost_down1.png"), 18 * i + 20, 18 * j + 68, this);
+                    }else if(Array[i][j].equals("cyanGhostAndPacDot") || Array[i][j].equals("cyanGhostAndBlackSpace")){ 
+                    	g.drawImage(getImage("cyanGhost_down1.png"), 18 * i + 20, 18 * j + 68, this); 
+                    }else if(Array[i][j].equals("pinkGhostAndPacDot") || Array[i][j].equals("pinkGhostAndBlackSpace")){ 
+                    	g.drawImage(getImage("pinkGhost_down1.png"), 18 * i + 20, 18 * j + 68, this); 
+                    }else if(Array[i][j].equals("orangeGhostAndPacDot") || Array[i][j].equals("orangeGhostAndBlackSpace")){ 
+                    	g.drawImage(getImage("orangeGhost_down1.png"), 18 * i + 20, 18 * j + 68, this); 
                     }else if(Array[i][j].equals("bigPacDot")){ 
                         g.setColor(Color.white); 
                         g.fillRect(18 * i + 23, 18 * j + 73, 6, 6); 
@@ -114,6 +99,17 @@ public class View extends JPanel{
             g.drawString("TO RESTART!", 95, 200); 
             g.drawString("ESC TO EXIT", 100, 300); 
         }
+	}
+	
+	public Image getImage(String itemName){
+		Image item;
+		
+		ImageIcon ii = new ImageIcon(this.getClass().getResource("Sprites/" + itemName));
+		item = ii.getImage();
+		
+		setDoubleBuffered(true);
+		
+		return item;
 	}
 	
 }
