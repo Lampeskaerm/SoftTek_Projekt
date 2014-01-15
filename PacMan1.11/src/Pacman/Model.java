@@ -310,11 +310,11 @@ public class Model extends JPanel implements Runnable {
                     } 
                 } 
             }
-			pacman.movePacman();
-			pacman.up = this.up;
-			pacman.down = this.down;
-			pacman.left = this.left;
-			pacman.right = this.right;
+//			pacman.movePacman();
+//			pacman.up = this.up;
+//			pacman.down = this.down;
+//			pacman.left = this.left;
+//			pacman.right = this.right;
               
             //Check if the game is won. 
             int numberOfPacDotsRemaining = 0; 
