@@ -3,7 +3,7 @@ import java.awt.Point;
 
 import javax.swing.JPanel;
 
-public class Screen extends JPanel implements Runnable {
+public class Model extends JPanel implements Runnable {
 	Thread thread = new Thread(this);
 	
 	Frame frame;
@@ -16,6 +16,11 @@ public class Screen extends JPanel implements Runnable {
 	public boolean lowerRightBigPacDot = false;
 	public boolean godMode = false;
 	int godModeCounter = 0;
+	boolean redPresent = false; 
+    boolean cyanPresent = false; 
+    boolean pinkPresent = false; 
+    boolean orangePresent = false; 
+    private int lives = 3;
 	
 	//Movement variables.
 	public boolean right = false;
@@ -30,56 +35,34 @@ public class Screen extends JPanel implements Runnable {
 	public Point cyanGhostPos = new Point();
 	public Point pinkGhostPos = new Point();
 	public Point orangeGhostPos = new Point();
-	private int Height;
-	private int Width;
+	
+	private int Height = 29;
+	private int Width = 25;
 	private String [][] Array; //Maybe change to String array? to easier see what is going on.
 	
 	View view;
 	GetLocations getLocations;
-	DirectionGenerator dirGen;
-	String randomMovement = "";
-	
-	PinkGhostLocation pinkGhostLoc;
-	CyanGhostLocation cyanGhostLoc;
-	RedGhostLocation redGhostLoc;
-	OrangeGhostLocation orangeGhostLoc;
-	PacmanLocation pacmanLoc;
 	Ghosts ghosts;
+	Pacman pacman;
+	GameArray gameArray;
 	
-	public Screen(Frame frame, int Width, int Height){
-		this.Width = Width;
-		this.Height = Height;
+	public Model(Frame frame){
 		Array = new String[Width][Height];
 		this.frame = frame;
-		frame.setSize(Width * 25 + 24, Height * 25 + 48);
+		frame.setSize(490, 670);
 		this.frame.addKeyListener(new KeyHandler(this));
 		thread.start();
-	}
-	
-	//Creates array with correct starting strings.
-	public void restartGameArray(){
-		for(int i = 0; i < Width; i++){
-			for(int j = 0; j < Height; j++){
-				Array[i][j] = "pacDot";
-			}
-		}
-		Array[(int)(Width / 2)][Height - 2] = "pacMan";
-		Array[(int)(Width / 2)][(int)(Height / 2 - 1)] = "redGhostAndBlackSpace";
-		Array[(int)(Width / 2 - 1)][(int)(Height / 2)] = "cyanGhostAndBlackSpace";
-		Array[(int)(Width / 2)][(int)(Height / 2)] = "pinkGhostAndBlackSpace";
-		Array[(int)(Width / 2 + 1)][(int)(Height / 2)] = "orangeGhostAndBlackSpace";
-		Array[1][1] = "bigPacDot";
-		Array[1][Height - 2] = "bigPacDot";
-		Array[Width - 2][1] = "bigPacDot";
-		Array[Width - 2][Height - 2] = "bigPacDot";
 	}
 	
 	public void run() {
 		
 		//Goes once:
-		restartGameArray();
-		view = new View(Array, gameState, frame, Width, Height);
+		gameArray = new GameArray(Array, Width, Height);
+		gameArray.restartGameArray();
+		this.Array = gameArray.Array;
+		view = new View(Array, gameState, frame, Width, Height, lives, godMode);
 		frame.getContentPane().add(view);
+		pacman = new Pacman(Array, Width, Height, godMode, pacmanPos, right, left, up, down);
 		getLocations = new GetLocations(Array, Width, Height, pacmanPos, redGhostPos, cyanGhostPos, pinkGhostPos, orangeGhostPos);
 //		dirGen = new DirectionGenerator();
 //		pinkGhostLoc = new PinkGhostLocation(Array, Width, Height, pinkGhostPos);
@@ -95,161 +78,286 @@ public class Screen extends JPanel implements Runnable {
 		//updates:
 		while(running){
 			
-			//movements:
-			//Move right.
-			while(right){
-				getLocations.getLocationPacMan();
-				if(pacmanPos.x < Width - 1){
-					if(Array[pacmanPos.x + 1][pacmanPos.y].equals("bigPacDot")){
-						godMode = true;
-					}
-				Array[pacmanPos.x + 1][pacmanPos.y] = "pacMan";
-				Array[pacmanPos.x][pacmanPos.y] = "blackSpace";
-				right = false;
-				}else{
-					right = false;
-				}
-			}
-			right = false;
-			
-			//Move left.
-			while(left){
-				getLocations.getLocationPacMan();
-				if(pacmanPos.x > 0){
-					if(Array[pacmanPos.x - 1][pacmanPos.y].equals("bigPacDot")){
-						godMode = true;
-					}
-				Array[pacmanPos.x - 1][pacmanPos.y] = "pacMan";
-				Array[pacmanPos.x][pacmanPos.y] = "blackSpace";
-				left = false;
-				}else{
-					left = false;
-				}
-			}
-			left = false;
-			
-			
-			//Move up.
-			while(up){
-				getLocations.getLocationPacMan();
-				if(pacmanPos.y > 0){
-					if(Array[pacmanPos.x][pacmanPos.y - 1].equals("bigPacDot")){
-						godMode = true;
-					}
-					Array[pacmanPos.x][pacmanPos.y - 1] = "pacMan";
-					Array[pacmanPos.x][pacmanPos.y] = "blackSpace";
-					up = false;
-				}else{
-					up = false;
-				}
-			}
-			up = false;
-			
-			
-			//move down.
-			while(down){
-				getLocations.getLocationPacMan();
-				if(pacmanPos.y < Height - 1){
-					if(Array[pacmanPos.x][pacmanPos.y + 1].equals("bigPacDot")){
-						godMode = true;
-					}
-					Array[pacmanPos.x][pacmanPos.y + 1] = "pacMan";
-					Array[pacmanPos.x][pacmanPos.y] = "blackSpace";
-					down = false;
-				}else{
-					down = false;
-				}
-			}
-			down = false;
-			
-			//Check if the game is won.
-			int numberOfBlackSpaces = 0;
-			for(int i = 0; i < Width; i++){
-				for(int j = 0; j < Height; j++){
-					if(Array[i][j].equals("blackSpace")){
-						numberOfBlackSpaces++;
-					}
-				}
-			}
-			if(numberOfBlackSpaces == Width * Height - 5){
-				gameState = "gameWon";
-			}	
-			
-			//Increment ghostCounter.
-			ghostCounter++;
-			if(ghostCounter == 50){
-				ghosts.Movements();
-				ghostCounter = 0;
-			}
-			
-			//Checks for collision with ghosts, gameover if this happends.
-			if(!godMode){
-				getLocations.getLocationPacMan();
-				getLocations.getLocationRedGhost();
-				if(pacmanPos.x == redGhostPos.x && pacmanPos.y == redGhostPos.y){
-					gameState = "gameOver";
-				}
-			
-				getLocations.getLocationCyanGhost();
-				if(pacmanPos.x == cyanGhostPos.x && pacmanPos.y == cyanGhostPos.y){
-					gameState =  "gameOver";
-				}
-			
-				getLocations.getLocationPinkGhost();
-				if(pacmanPos.x == pinkGhostPos.x && pacmanPos.y == pinkGhostPos.y){
-					gameState =  "gameOver";
-				}
-			
-				getLocations.getLocationOrangeGhost();
-				if(pacmanPos.x == orangeGhostPos.x && pacmanPos.y == orangeGhostPos.y){
-					gameState =  "gameOver";
-				}
-			}
-			if(godMode == true){
-				getLocations.getLocationPacMan();
-				getLocations.getLocationRedGhost();
-				if(pacmanPos.x == redGhostPos.x && pacmanPos.y == redGhostPos.y){
-					Array[(int)(Width / 2)][(int)(Height / 2 - 1)] = "redGhostAndBlackSpace";
-					getLocations.getLocationRedGhost();
-				}
-				
-				getLocations.getLocationCyanGhost();
-				if(pacmanPos.x == cyanGhostPos.x && pacmanPos.y == cyanGhostPos.y){
-					Array[(int)(Width / 2 - 1)][(int)(Height / 2)] = "cyanGhostAndBlackSpace";
-					getLocations.getLocationCyanGhost();
-				}
-				
-				getLocations.getLocationPinkGhost();
-				if(pacmanPos.x == pinkGhostPos.x && pacmanPos.y == pinkGhostPos.y){
-					Array[(int)(Width / 2)][(int)(Height / 2)] = "pinkGhostAndBlackSpace";
-					getLocations.getLocationPinkGhost();
-				}
-				
-				getLocations.getLocationOrangeGhost();
-				if(pacmanPos.x == orangeGhostPos.x && pacmanPos.y == orangeGhostPos.y){
-					Array[(int)(Width / 2 + 1)][(int)(Height / 2)] = "orangeGhostAndBlackSpace";
-					getLocations.getLocationOrangeGhost();
-				}
-				
-			}
-			 
-			
-			//Make so that when the gameover or game won screen is up you can restart by pressing space
-			if(enter){
-				gameState = "gameOn";
-				restartGameArray();
-				enter = false;
-			}
-
-			
-			//Check god mode and increment god mode counter.
-			if(godMode){
-				godModeCounter++;
-				if(godModeCounter == 500){
-					godMode = false;
-					godModeCounter = 0;
-				}
-			}
+			//check if all ghosts are present, if not they respawn. 
+            for(int i = 0; i < 24; i++){ 
+                for(int j = 0; j < 29; j++){ 
+                    if(Array[i][j].equals("redGhostAndPacDot") || Array[i][j].equals("redGhostAndBlackSpace")){ 
+                        redPresent = true; 
+                    } 
+                    if(Array[i][j].equals("cyanGhostAndPacDot") || Array[i][j].equals("cyanGhostAndBlackSpace")){ 
+                        cyanPresent = true; 
+                          
+                    } 
+                    if(Array[i][j].equals("pinkGhostAndPacDot") || Array[i][j].equals("pinkGhostAndBlackSpace")){ 
+                        pinkPresent = true; 
+                          
+                    } 
+                    if(Array[i][j].equals("orangeGhostAndPacDot") || Array[i][j].equals("orangeGhostAndBlackSpace")){ 
+                        orangePresent = true; 
+                          
+                    } 
+                } 
+            } 
+           if(!redPresent){ 
+                Array[(int)(Width / 2)][(int)(Height / 2 - 2)] = "redGhostAndBlackSpace"; 
+            } 
+            redPresent = false; 
+             if(!cyanPresent){ 
+                Array[(int)(Width / 2 - 1)][(int)(Height / 2 - 1)] = "cyanGhostAndBlackSpace"; 
+            } 
+            cyanPresent = false; 
+            if(!pinkPresent){ 
+                Array[(int)(Width / 2)][(int)(Height / 2 - 1)] = "pinkGhostAndBlackSpace"; 
+            } 
+            pinkPresent = false; 
+            if(!orangePresent){ 
+                Array[(int)(Width / 2 + 1)][(int)(Height / 2 - 1)] = "orangeGhostAndBlackSpace"; 
+            } 
+            orangePresent = false;
+			ghosts.checkIfPresent(redPresent, cyanPresent, pinkPresent, orangePresent);
+  
+            //movements: 
+            //Move right. 
+            while(right){ 
+                getLocations.getLocationPacMan(); 
+                if(pacmanPos.x < Width - 1){ 
+                    if(pacmanPos.x + 1 == 10 && pacmanPos.y == 13){ 
+                        right = false; 
+                    }else{ 
+                        if(Array[pacmanPos.x + 1][pacmanPos.y].equals("bigPacDot")){ 
+                            godMode = true; 
+                            Array[pacmanPos.x + 1][pacmanPos.y] = "pacMan"; 
+                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            right = false; 
+                        }else if(Array[pacmanPos.x + 1][pacmanPos.y].equals("pacDot") || Array[pacmanPos.x + 1][pacmanPos.y].equals("blackSpace")){ 
+                            Array[pacmanPos.x + 1][pacmanPos.y] = "pacMan"; 
+                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            right = false; 
+                        }else if(Array[pacmanPos.x + 1][pacmanPos.y].equals("Wall")){ 
+                            right = false; 
+                        }else if(Array[pacmanPos.x + 1][pacmanPos.y].equals("redGhostAndPacDot") || Array[pacmanPos.x + 1][pacmanPos.y].equals("cyanGhostAndPacDot") || Array[pacmanPos.x + 1][pacmanPos.y].equals("pinkGhostAndPacDot") || Array[pacmanPos.x + 1][pacmanPos.y].equals("orangeGhostAndPacDot")){ 
+                            if(godMode){ 
+                                Array[pacmanPos.x + 1][pacmanPos.y] = "pacMan"; 
+                                Array[pacmanPos.x][pacmanPos.y] = "pacDot"; 
+                            } 
+                            if(!godMode){ 
+                                Array[pacmanPos.x][pacmanPos.y] = "pacDot"; 
+                                ResetPacManAndLoseLife(); 
+                            } 
+                            right = false; 
+                        }else if(Array[pacmanPos.x + 1][pacmanPos.y].equals("redGhostAndBlackSpace") || Array[pacmanPos.x + 1][pacmanPos.y].equals("cyanGhostAndBlackSpace") || Array[pacmanPos.x + 1][pacmanPos.y].equals("pinkGhostAndBlackSpace") || Array[pacmanPos.x + 1][pacmanPos.y].equals("orangeGhostAndBlackSpace")){ 
+                            if(godMode){ 
+                                Array[pacmanPos.x + 1][pacmanPos.y] = "pacMan"; 
+                                Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            } 
+                            if(!godMode){ 
+                                Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                                ResetPacManAndLoseLife(); 
+                            } 
+                            right = false; 
+                        }else if(Array[pacmanPos.x + 1][pacmanPos.y].equals("portal")){ 
+                            Array[1][13] = "pacMan"; 
+                            Array[23][13] = "blackSpace"; 
+                            right = false; 
+                        }else{ 
+                            right = false; 
+                        } 
+                    } 
+                } 
+            } 
+              
+              
+            //Move left. 
+            while(left){ 
+                getLocations.getLocationPacMan(); 
+                if(pacmanPos.x > 0){ 
+                    if(pacmanPos.x - 1 == 14 && pacmanPos.y == 13){ 
+                        left = false; 
+                    }else{ 
+                        if(Array[pacmanPos.x - 1][pacmanPos.y].equals("bigPacDot")){ 
+                            godMode = true; 
+                            Array[pacmanPos.x - 1][pacmanPos.y] = "pacMan"; 
+                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            left = false; 
+                        }else if(Array[pacmanPos.x - 1][pacmanPos.y].equals("pacDot") || Array[pacmanPos.x - 1][pacmanPos.y].equals("blackSpace") || Array[pacmanPos.x - 1][pacmanPos.y].equals("bigPacDot")){ 
+                            Array[pacmanPos.x - 1][pacmanPos.y] = "pacMan"; 
+                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            left = false; 
+                        }else if(Array[pacmanPos.x - 1][pacmanPos.y].equals("Wall")){ 
+                            left = false; 
+                        }else if(Array[pacmanPos.x - 1][pacmanPos.y].equals("redGhostAndPacDot") || Array[pacmanPos.x - 1][pacmanPos.y].equals("cyanGhostAndPacDot") || Array[pacmanPos.x - 1][pacmanPos.y].equals("pinkGhostAndPacDot") || Array[pacmanPos.x - 1][pacmanPos.y].equals("orangeGhostAndPacDot")){ 
+                            if(godMode){ 
+                                Array[pacmanPos.x - 1][pacmanPos.y] = "pacMan"; 
+                                Array[pacmanPos.x][pacmanPos.y] = "pacDot"; 
+                            } 
+                            if(!godMode){ 
+                                Array[pacmanPos.x][pacmanPos.y] = "pacDot"; 
+                                ResetPacManAndLoseLife(); 
+                            } 
+                            left = false; 
+                        }else if(Array[pacmanPos.x - 1][pacmanPos.y].equals("redGhostAndBlackSpace") || Array[pacmanPos.x - 1][pacmanPos.y].equals("cyanGhostAndBlackSpace") || Array[pacmanPos.x - 1][pacmanPos.y].equals("pinkGhostAndBlackSpace") || Array[pacmanPos.x - 1][pacmanPos.y].equals("orangeGhostAndBlackSpace")){ 
+                            if(godMode){ 
+                                Array[pacmanPos.x - 1][pacmanPos.y] = "pacMan"; 
+                                Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            } 
+                            if(!godMode){ 
+                                Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                                ResetPacManAndLoseLife(); 
+                            } 
+                            left = false; 
+                        }else if(Array[pacmanPos.x - 1][pacmanPos.y].equals("portal")){ 
+                            Array[23][13] = "pacMan"; 
+                            Array[1][13] = "blackSpace"; 
+                            left = false; 
+                        }else{ 
+                        left = false; 
+                        } 
+                    } 
+                } 
+            } 
+          
+              
+              
+              
+//            Move up. 
+            while(up){ 
+                getLocations.getLocationPacMan(); 
+                if(pacmanPos.y > 0){ 
+                    if(pacmanPos.x == 12 && pacmanPos.y - 1 == 14){ 
+                        up = false; 
+                    }else{ 
+                        if(Array[pacmanPos.x][pacmanPos.y - 1].equals("bigPacDot")){ 
+                            godMode = true; 
+                            Array[pacmanPos.x][pacmanPos.y - 1] = "pacMan"; 
+                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            up = false; 
+                        }else if(Array[pacmanPos.x][pacmanPos.y - 1].equals("pacDot") || Array[pacmanPos.x][pacmanPos.y - 1].equals("blackSpace") || Array[pacmanPos.x][pacmanPos.y - 1].equals("bigPacDot")){ 
+                            Array[pacmanPos.x][pacmanPos.y - 1] = "pacMan"; 
+                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            up = false; 
+                        }else if(Array[pacmanPos.x][pacmanPos.y - 1].equals("Wall")){ 
+                            up = false; 
+                        }else if(Array[pacmanPos.x][pacmanPos.y - 1].equals("redGhostAndPacDot") || Array[pacmanPos.x][pacmanPos.y - 1].equals("cyanGhostAndPacDot") || Array[pacmanPos.x][pacmanPos.y - 1].equals("pinkGhostAndPacDot") || Array[pacmanPos.x][pacmanPos.y - 1].equals("orangeGhostAndPacDot")){ 
+                            if(godMode){ 
+                                Array[pacmanPos.x][pacmanPos.y - 1] = "pacMan"; 
+                                Array[pacmanPos.x][pacmanPos.y] = "pacDot"; 
+                            } 
+                            if(!godMode){ 
+                                Array[pacmanPos.x][pacmanPos.y] = "pacDot"; 
+                                ResetPacManAndLoseLife(); 
+                            } 
+                            up = false; 
+                        }else if(Array[pacmanPos.x][pacmanPos.y - 1].equals("redGhostAndBlackSpace") || Array[pacmanPos.x][pacmanPos.y - 1].equals("cyanGhostAndBlackSpace") || Array[pacmanPos.x][pacmanPos.y - 1].equals("pinkGhostAndBlackSpace") || Array[pacmanPos.x][pacmanPos.y - 1].equals("orangeGhostAndBlackSpace")){ 
+                            if(godMode){ 
+                                Array[pacmanPos.x][pacmanPos.y - 1] = "pacMan"; 
+                                Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            } 
+                            if(!godMode){ 
+                                Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                                ResetPacManAndLoseLife(); 
+                            } 
+                            up = false; 
+                        }else{ 
+                        up = false; 
+                        } 
+                    } 
+                } 
+            } 
+  
+              
+              
+            //move down. 
+            while(down){ 
+                getLocations.getLocationPacMan(); 
+                if(pacmanPos.y < Height - 1){ 
+                    if(pacmanPos.x == 12 && pacmanPos.y + 1 == 12){ 
+                        down = false; 
+                    }else{ 
+                        if(Array[pacmanPos.x][pacmanPos.y + 1].equals("bigPacDot")){ 
+                            godMode = true; 
+                            Array[pacmanPos.x][pacmanPos.y + 1] = "pacMan"; 
+                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            down = false; 
+                        }else if(Array[pacmanPos.x][pacmanPos.y + 1].equals("pacDot") || Array[pacmanPos.x][pacmanPos.y + 1].equals("blackSpace") || Array[pacmanPos.x][pacmanPos.y + 1].equals("bigPacDot")){ 
+                            Array[pacmanPos.x][pacmanPos.y + 1] = "pacMan"; 
+                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            down = false; 
+                        }else if(Array[pacmanPos.x][pacmanPos.y + 1].equals("Wall")){ 
+                            down = false; 
+                        }else if(Array[pacmanPos.x][pacmanPos.y + 1].equals("redGhostAndPacDot") || Array[pacmanPos.x][pacmanPos.y + 1].equals("cyanGhostAndPacDot") || Array[pacmanPos.x][pacmanPos.y + 1].equals("pinkGhostAndPacDot") || Array[pacmanPos.x][pacmanPos.y + 1].equals("orangeGhostAndPacDot")){ 
+                            if(godMode){ 
+                                Array[pacmanPos.x][pacmanPos.y + 1] = "pacMan"; 
+                                Array[pacmanPos.x][pacmanPos.y] = "pacDot"; 
+                            } 
+                            if(!godMode){ 
+                                Array[pacmanPos.x][pacmanPos.y] = "pacDot"; 
+                                ResetPacManAndLoseLife(); 
+                            } 
+                            down = false; 
+                        }else if(Array[pacmanPos.x][pacmanPos.y + 1].equals("redGhostAndBlackSpace") || Array[pacmanPos.x][pacmanPos.y + 1].equals("cyanGhostAndBlackSpace") || Array[pacmanPos.x][pacmanPos.y + 1].equals("pinkGhostAndBlackSpace") || Array[pacmanPos.x][pacmanPos.y + 1].equals("orangeGhostAndBlackSpace")){ 
+                            if(godMode){ 
+                                Array[pacmanPos.x][pacmanPos.y + 1] = "pacMan"; 
+                                Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            } 
+                            if(!godMode){ 
+                                Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                                ResetPacManAndLoseLife(); 
+                            } 
+                            down = false; 
+                        }else{ 
+                        down = false; 
+                        } 
+                    } 
+                } 
+            }
+			pacman.movePacman();
+			pacman.up = this.up;
+			pacman.down = this.down;
+			pacman.left = this.left;
+			pacman.right = this.right;
+              
+            //Check if the game is won. 
+            int numberOfPacDotsRemaining = 0; 
+            for(int i = 0; i < Width; i++){ 
+                for(int j = 0; j < Height; j++){ 
+                    if(Array[i][j].equals("pacDot") || Array[i][j].equals("bigPacDot")){ 
+                        numberOfPacDotsRemaining++; 
+                    } 
+                } 
+            } 
+            if(numberOfPacDotsRemaining == 0){ 
+                gameState = "gameWon"; 
+            }    
+              
+            //Increment ghostCounter. 
+            ghostCounter++; 
+            if(ghostCounter == 50){ 
+                ghosts.Movements(); 
+                ghostCounter = 0; 
+            } 
+                  
+            //Make so that when the gameover or game won screen is up you can restart by pressing space 
+            if(enter){ 
+                gameState = "gameOn"; 
+                gameArray.restartGameArray(); 
+                this.Array = gameArray.Array;
+                lives = 3; 
+                enter = false; 
+            } 
+  
+              
+            //Check god mode and increment god mode counter. 
+            if(godMode){ 
+                godModeCounter++; 
+                if(godModeCounter == 500){ 
+                    godMode = false; 
+                    godModeCounter = 0; 
+                } 
+            } 
+              
+            if(lives <= 0){ 
+                gameState = "gameOver"; 
+            }
 			
 			//update screen variables
 			this.pacmanPos = getLocations.pacmanPos;
@@ -265,9 +373,12 @@ public class Screen extends JPanel implements Runnable {
 			
 			//update other class variables
 			view.gameState = this.gameState;
+			view.godMode = this.godMode;
+			view.lives = this.lives;
 			ghosts.godMode = this.godMode;
 			getLocations.Array = this.Array;
 			ghosts.Array = this.Array;
+			pacman.Array = this.Array;
 
 			
 			//update graphics.
@@ -310,6 +421,11 @@ public class Screen extends JPanel implements Runnable {
 			enter = true;
 		}
 	}
+	
+	public void ResetPacManAndLoseLife(){ 
+        Array[12][21] = "pacMan"; 
+        lives--; 
+    } 
 //	public void randomDirection(){
 //		 int random = (int)(Math.random() * 4 + 1);
 //		 if(random == 1){

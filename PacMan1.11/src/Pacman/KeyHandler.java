@@ -4,10 +4,10 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 	
-	private Screen screen;
-	private Screen.KeyTyped keyTyped;
+	private Model screen;
+	private Model.KeyTyped keyTyped;
 	
-	public KeyHandler(Screen screen){
+	public KeyHandler(Model screen){
 		this.screen = screen;
 		this.keyTyped = this.screen.new KeyTyped();
 	}
