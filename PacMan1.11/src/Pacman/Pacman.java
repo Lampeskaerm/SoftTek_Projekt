@@ -10,7 +10,7 @@ public class Pacman {
 	boolean godMode, right, left, up, down;
 	int Width, Height;
 	
-	public Pacman (String[][] Array, int Width, int Height, boolean godMode, Point pacmanPos, boolean right, boolean left, boolean up, boolean down){
+	public Pacman (String[][] Array, int Width, int Height, boolean godMode, Point pacmanPos){
 		this.pacmanPos = pacmanPos;
 		this.Array = Array;
 		this.godMode = godMode;
@@ -24,7 +24,8 @@ public class Pacman {
 		pacmanLoc = new PacmanLocation(Array, Width, Height, pacmanPos);
 	}
 	
-	public void movePacman(){
+	public void movePacman( boolean right, boolean left, boolean up, boolean down){
+		
 		//movements: 
         //Move right. 
         while(right){ 
