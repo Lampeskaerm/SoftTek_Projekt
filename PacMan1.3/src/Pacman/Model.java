@@ -33,6 +33,7 @@ public class Model extends JPanel implements Runnable {
 	public String cyanDir = "up";
 	public String pinkDir = "up";
 	public String orangeDir = "up";
+	public String pacmanDir = "up";
 	
 	//Location variables.
 	public Point pacmanPos = new Point();
@@ -68,7 +69,7 @@ public class Model extends JPanel implements Runnable {
 		gameArray = new GameArray(Array, Width, Height);
 		gameArray.restartGameArray();
 		this.Array = gameArray.Array;
-		view = new View(Array, gameState, frame, Width, Height, lives, godMode, redDir, cyanDir, pinkDir, orangeDir);
+		view = new View(Array, gameState, frame, Width, Height, lives, godMode, redDir, cyanDir, pinkDir, orangeDir, pacmanDir);
 		frame.getContentPane().add(view);
 		pacman = new Pacman(Array, Width, Height, pacmanPos, godMode, lives);
 		getLocations = new GetLocations(Array, Width, Height, pacmanPos, redGhostPos, cyanGhostPos, pinkGhostPos, orangeGhostPos);
@@ -139,6 +140,7 @@ public class Model extends JPanel implements Runnable {
 			ghosts.gameState = this.gameState;
 			
 			//update other class variables
+			view.pacmanDir = pacmanDir;
 			view.redDir = ghosts.redDir;
             view.cyanDir = ghosts.cyanDir;
             view.pinkDir = ghosts.pinkDir;
@@ -174,18 +176,22 @@ public class Model extends JPanel implements Runnable {
 		
 		public void KeyRight(){
 			right = true;
+			pacmanDir = "right";
 		}
 		
 		public void KeyLeft(){
 			left = true;
+			pacmanDir = "left";
 		}
 		
 		public void KeyUp(){
 			up = true;
+			pacmanDir = "up";
 		}
 		
 		public void KeyDown(){
 			down = true;
+			pacmanDir = "down";
 		}
 		
 		public void KeyEnter(){

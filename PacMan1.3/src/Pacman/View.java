@@ -10,14 +10,14 @@ import javax.swing.JPanel;
 
 public class View extends JPanel{
 	String[][] Array;
-	String gameState, redDir, cyanDir, pinkDir, orangeDir;
+	String gameState, redDir, cyanDir, pinkDir, orangeDir, pacmanDir;
 	Frame frame;
 	int Width, Height, lives;
 	boolean godMode;
 	
 	
 	public View(String[][] Array, String gameState, Frame frame, int Width, int Height, int lives, boolean godMode, String redDir,
-				String cyanDir, String pinkDir, String orangeDir){
+				String cyanDir, String pinkDir, String orangeDir, String pacmanDir){
 		this.Array = Array;
 		this.gameState = gameState;
 		this.frame = frame;
@@ -29,6 +29,7 @@ public class View extends JPanel{
 		this.cyanDir = cyanDir;
 		this.pinkDir = pinkDir;
 		this.orangeDir = orangeDir;
+		this.pacmanDir = pacmanDir;
 	}
 	
 	@Override
@@ -58,7 +59,7 @@ public class View extends JPanel{
                         g.setColor(Color.white); 
                         g.fillRect(18 * i + 25, 18 * j + 75, 2, 2); 
                     }else if(Array[i][j].equals("pacMan")){ 
-                        g.drawImage(getImage("pacman_left1.png"), 18 * i + 20, 18 * j + 68, this);
+                        g.drawImage(getImage("pacman_"+pacmanDir+"1.png"), 18 * i + 20, 18 * j + 68, this);
                     }else if(Array[i][j].equals("redGhostAndPacDot") || Array[i][j].equals("redGhostAndBlackSpace")){ 
                     	g.drawImage(getImage("redGhost_"+redDir+"1.png"), 18 * i + 20, 18 * j + 68, this);
                     }else if(Array[i][j].equals("cyanGhostAndPacDot") || Array[i][j].equals("cyanGhostAndBlackSpace")){ 
