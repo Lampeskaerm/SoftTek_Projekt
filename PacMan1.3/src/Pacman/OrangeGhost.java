@@ -35,7 +35,7 @@ public class OrangeGhost {
 		orangeGhostLoc.getLocation();
 		
 		//move right.
-		if(orangeGhost.equals("moveRight")){
+		if(orangeGhost.equals("right")){
 			if(orangeGhostPos.x < Width - 1){
 				orangeGhostLoc.getLocation();
 				pacmanLoc.getLocation();
@@ -65,7 +65,7 @@ public class OrangeGhost {
 				
 				
 		//move left.
-		if(orangeGhost.equals("moveLeft")){
+		if(orangeGhost.equals("left")){
 			if(orangeGhostPos.x > 0){
 				orangeGhostLoc.getLocation();
 				pacmanLoc.getLocation();
@@ -95,7 +95,7 @@ public class OrangeGhost {
 			
 			
 		//move up.
-		if(orangeGhost.equals("moveUp")){
+		if(orangeGhost.equals("up")){
 			if(orangeGhostPos.y > 0){
 				orangeGhostLoc.getLocation();
 				pacmanLoc.getLocation();
@@ -125,7 +125,7 @@ public class OrangeGhost {
 			
 				
 		//move down.
-		if(orangeGhost.equals("moveDown")){
+		if(orangeGhost.equals("down")){
 			if(orangeGhostPos.y < Height - 1){
 				orangeGhostLoc.getLocation();
 				pacmanLoc.getLocation();

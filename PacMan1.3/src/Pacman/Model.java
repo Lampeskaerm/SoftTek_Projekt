@@ -28,6 +28,12 @@ public class Model extends JPanel implements Runnable {
 	public boolean down = false;
 	public int ghostCounter = 0;
 	
+	//direction of ghosts
+	public String redDir = "up";
+	public String cyanDir = "up";
+	public String pinkDir = "up";
+	public String orangeDir = "up";
+	
 	//Location variables.
 	public Point pacmanPos = new Point();
 	public Point redGhostPos = new Point();
@@ -62,7 +68,7 @@ public class Model extends JPanel implements Runnable {
 		gameArray = new GameArray(Array, Width, Height);
 		gameArray.restartGameArray();
 		this.Array = gameArray.Array;
-		view = new View(Array, gameState, frame, Width, Height, lives, godMode);
+		view = new View(Array, gameState, frame, Width, Height, lives, godMode, redDir, cyanDir, pinkDir, orangeDir);
 		frame.getContentPane().add(view);
 		pacman = new Pacman(Array, Width, Height, pacmanPos, godMode, lives);
 		getLocations = new GetLocations(Array, Width, Height, pacmanPos, redGhostPos, cyanGhostPos, pinkGhostPos, orangeGhostPos);
@@ -133,6 +139,10 @@ public class Model extends JPanel implements Runnable {
 			ghosts.gameState = this.gameState;
 			
 			//update other class variables
+			view.redDir = ghosts.redDir;
+            view.cyanDir = ghosts.cyanDir;
+            view.pinkDir = ghosts.pinkDir;
+            view.orangeDir = ghosts.orangeDir;
 			view.gameState = this.gameState;
 			view.godMode = this.godMode;
 			view.lives = this.lives;

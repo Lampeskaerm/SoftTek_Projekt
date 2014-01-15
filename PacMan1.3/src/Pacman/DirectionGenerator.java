@@ -10,13 +10,13 @@ public class DirectionGenerator {
 	public void randomDirection(){
 		 int random = (int)(Math.random() * 4 + 1);
 		 if(random == 1){
-			 randomMovement = "moveRight";
+			 randomMovement = "right";
 		 }else if(random == 2){
-			 randomMovement = "moveLeft";
+			 randomMovement = "left";
 		 }else if(random == 3){
-			 randomMovement = "moveDown";
+			 randomMovement = "down";
 		 }else if(random == 4){
-			 randomMovement = "moveUp";
+			 randomMovement = "up";
 		 }
 	}
 }

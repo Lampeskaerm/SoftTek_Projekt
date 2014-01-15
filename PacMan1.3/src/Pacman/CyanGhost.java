@@ -35,7 +35,7 @@ public class CyanGhost {
 		cyanGhostLoc.getLocation();
 		
 		//move right.
-		if(cyanGhost.equals("moveRight")){
+		if(cyanGhost.equals("right")){
 			if(cyanGhostPos.x < Width - 1){
 				cyanGhostLoc.getLocation();
 				pacmanLoc.getLocation();
@@ -65,7 +65,7 @@ public class CyanGhost {
 				
 				
 		//move left.
-		if(cyanGhost.equals("moveLeft")){
+		if(cyanGhost.equals("left")){
 			if(cyanGhostPos.x > 0){
 				cyanGhostLoc.getLocation();
 				pacmanLoc.getLocation();
@@ -95,7 +95,7 @@ public class CyanGhost {
 			
 			
 		//move up.
-		if(cyanGhost.equals("moveUp")){
+		if(cyanGhost.equals("up")){
 			if(cyanGhostPos.y > 0){
 				cyanGhostLoc.getLocation();
 				pacmanLoc.getLocation();
@@ -125,7 +125,7 @@ public class CyanGhost {
 			
 				
 		//move down.
-		if(cyanGhost.equals("moveDown")){
+		if(cyanGhost.equals("down")){
 			if(cyanGhostPos.y < Height - 1){
 				cyanGhostLoc.getLocation();
 				pacmanLoc.getLocation();

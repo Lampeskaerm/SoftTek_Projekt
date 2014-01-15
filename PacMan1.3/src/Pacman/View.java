@@ -10,13 +10,14 @@ import javax.swing.JPanel;
 
 public class View extends JPanel{
 	String[][] Array;
-	String gameState;
+	String gameState, redDir, cyanDir, pinkDir, orangeDir;
 	Frame frame;
 	int Width, Height, lives;
 	boolean godMode;
 	
 	
-	public View(String[][] Array, String gameState, Frame frame, int Width, int Height, int lives, boolean godMode){
+	public View(String[][] Array, String gameState, Frame frame, int Width, int Height, int lives, boolean godMode, String redDir,
+				String cyanDir, String pinkDir, String orangeDir){
 		this.Array = Array;
 		this.gameState = gameState;
 		this.frame = frame;
@@ -24,6 +25,10 @@ public class View extends JPanel{
 		this.Height = Height;
 		this.lives = lives;
 		this.godMode = godMode;
+		this.redDir = redDir;
+		this.cyanDir = cyanDir;
+		this.pinkDir = pinkDir;
+		this.orangeDir = orangeDir;
 	}
 	
 	@Override
@@ -37,7 +42,7 @@ public class View extends JPanel{
             g.fillRect(0, 0, this.frame.getWidth(), this.frame.getHeight()); 
             if(godMode){ 
                 g.setColor(Color.green); 
-                g.drawString("GODMODE, GO! GO!", 330, 50); 
+                g.drawString("GODMODE, GO! GO!", 330, 50);
             } 
             //Draws how many lives are remaining. 
             for(int i = 0; i < lives; i++){ 
@@ -55,13 +60,13 @@ public class View extends JPanel{
                     }else if(Array[i][j].equals("pacMan")){ 
                         g.drawImage(getImage("pacman_left1.png"), 18 * i + 20, 18 * j + 68, this);
                     }else if(Array[i][j].equals("redGhostAndPacDot") || Array[i][j].equals("redGhostAndBlackSpace")){ 
-                    	g.drawImage(getImage("redGhost_down1.png"), 18 * i + 20, 18 * j + 68, this);
+                    	g.drawImage(getImage("redGhost_"+redDir+"1.png"), 18 * i + 20, 18 * j + 68, this);
                     }else if(Array[i][j].equals("cyanGhostAndPacDot") || Array[i][j].equals("cyanGhostAndBlackSpace")){ 
-                    	g.drawImage(getImage("cyanGhost_down1.png"), 18 * i + 20, 18 * j + 68, this); 
+                    	g.drawImage(getImage("cyanGhost_"+cyanDir+"1.png"), 18 * i + 20, 18 * j + 68, this); 
                     }else if(Array[i][j].equals("pinkGhostAndPacDot") || Array[i][j].equals("pinkGhostAndBlackSpace")){ 
-                    	g.drawImage(getImage("pinkGhost_down1.png"), 18 * i + 20, 18 * j + 68, this); 
+                    	g.drawImage(getImage("pinkGhost_"+pinkDir+"1.png"), 18 * i + 20, 18 * j + 68, this); 
                     }else if(Array[i][j].equals("orangeGhostAndPacDot") || Array[i][j].equals("orangeGhostAndBlackSpace")){ 
-                    	g.drawImage(getImage("orangeGhost_down1.png"), 18 * i + 20, 18 * j + 68, this); 
+                    	g.drawImage(getImage("orangeGhost_" + orangeDir + "1.png"), 18 * i + 20, 18 * j + 68, this); 
                     }else if(Array[i][j].equals("bigPacDot")){ 
                         g.setColor(Color.white); 
                         g.fillRect(18 * i + 23, 18 * j + 73, 6, 6); 
@@ -104,7 +109,9 @@ public class View extends JPanel{
 	public Image getImage(String itemName){
 		Image item;
 		
-		ImageIcon ii = new ImageIcon(this.getClass().getResource("Sprites/" + itemName));
+		String imgDir = "Sprites/" + itemName;
+		
+		ImageIcon ii = new ImageIcon(this.getClass().getResource(imgDir));
 		item = ii.getImage();
 		
 		setDoubleBuffered(true);

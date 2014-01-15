@@ -35,7 +35,7 @@ public class PinkGhost {
 		pinkGhostLoc.getLocation();
 		
 		//move right.
-		if(pinkGhost.equals("moveRight")){
+		if(pinkGhost.equals("right")){
 			if(pinkGhostPos.x < Width - 1){
 				pinkGhostLoc.getLocation();
 				pacmanLoc.getLocation();
@@ -65,7 +65,7 @@ public class PinkGhost {
 				
 				
 		//move left.
-		if(pinkGhost.equals("moveLeft")){
+		if(pinkGhost.equals("left")){
 			if(pinkGhostPos.x > 0){
 				pinkGhostLoc.getLocation();
 				pacmanLoc.getLocation();
@@ -95,7 +95,7 @@ public class PinkGhost {
 			
 			
 		//move up.
-		if(pinkGhost.equals("moveUp")){
+		if(pinkGhost.equals("up")){
 			if(pinkGhostPos.y > 0){
 				pinkGhostLoc.getLocation();
 				pacmanLoc.getLocation();
@@ -125,7 +125,7 @@ public class PinkGhost {
 			
 				
 		//move down.
-		if(pinkGhost.equals("moveDown")){
+		if(pinkGhost.equals("down")){
 			if(pinkGhostPos.y < Height - 1){
 				pinkGhostLoc.getLocation();
 				pacmanLoc.getLocation();

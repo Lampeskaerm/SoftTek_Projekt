@@ -9,6 +9,7 @@ public class Ghosts {
 	Point pacmanPos, redGhostPos, cyanGhostPos, pinkGhostPos, orangeGhostPos;
 	boolean godMode;
 	String gameState;
+	String redDir = "up", pinkDir = "up", cyanDir = "up", orangeDir = "up";
 	
 	GetLocations getLocations;
 	RedGhost redGhost;
@@ -38,21 +39,25 @@ public class Ghosts {
 	public void Movements(){
 		
 		redGhost.Movements();
+		redDir = redGhost.redGhost;
 		if(redGhost.gameState == "GameOver"){
 			this.gameState = redGhost.gameState;
 		}				
 				
 		cyanGhost.Movements();
+		cyanDir = cyanGhost.cyanGhost;
 		if(cyanGhost.gameState == "GameOver"){
 			this.gameState = cyanGhost.gameState;
 		}
 						
 		pinkGhost.Movements();
+		pinkDir = pinkGhost.pinkGhost;
 		if(pinkGhost.gameState == "GameOver"){
 			this.gameState = pinkGhost.gameState;
 		}
 		
 		orangeGhost.Movements();
+		orangeDir = orangeGhost.orangeGhost;
 		if(orangeGhost.gameState == "GameOver"){
 			this.gameState = orangeGhost.gameState;
 		}

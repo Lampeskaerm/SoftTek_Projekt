@@ -37,7 +37,7 @@ public class RedGhost {
 		redGhostLoc.getLocation();
 		
 		//move right.
-		if(redGhost.equals("moveRight")){
+		if(redGhost.equals("right")){
 			if(redGhostPos.x < Width - 1){
 				redGhostLoc.getLocation();
 				pacmanLoc.getLocation();
@@ -67,7 +67,7 @@ public class RedGhost {
 				
 				
 		//move left.
-		if(redGhost.equals("moveLeft")){
+		if(redGhost.equals("left")){
 			if(redGhostPos.x > 0){
 				redGhostLoc.getLocation();
 				pacmanLoc.getLocation();
@@ -97,7 +97,7 @@ public class RedGhost {
 			
 			
 		//move up.
-		if(redGhost.equals("moveUp")){
+		if(redGhost.equals("up")){
 			if(redGhostPos.y > 0){
 				redGhostLoc.getLocation();
 				pacmanLoc.getLocation();
@@ -127,7 +127,7 @@ public class RedGhost {
 			
 				
 		//move down.
-		if(redGhost.equals("moveDown")){
+		if(redGhost.equals("down")){
 			if(redGhostPos.y < Height - 1){
 				redGhostLoc.getLocation();
 				pacmanLoc.getLocation();
