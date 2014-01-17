@@ -329,11 +329,10 @@ public class Pacman extends Objects{
             } 
         }
 		if(!pacmanPresent){
-			Array[13][23] = "pacMan"; 
+			Array[14][24] = "pacMan"; 
 		}
 	}
-	
-	
+		
 	public static void pacmanSounds(String state){
 		playSounds.playSound(state);
 	}

@@ -72,7 +72,7 @@ public class Ghost extends Objects{
 							if(Array[pos.x + 1][pos.y].equals("pacMan")){
 								Pacman.pacmanSounds("pacman_death.wav");
 								Pacman.lives--;
-								Array[12][21] = "pacMan";
+								Array[13][23] = "pacMan";
 								Array[pos.x][pos.y] = "blackSpace";
 								Array[pos.x + 1][pos.y] = ghostColor+"GhostAndBlackSpace";
 							}
@@ -114,7 +114,7 @@ public class Ghost extends Objects{
 							if(Array[pos.x - 1][pos.y].equals("pacMan")){
 								Pacman.pacmanSounds("pacman_death.wav");
 								Pacman.lives--;
-								Array[12][21] = "pacMan";
+								Array[13][23] = "pacMan";
 								Array[pos.x][pos.y] = "blackSpace";
 								Array[pos.x - 1][pos.y] = ghostColor+"GhostAndBlackSpace";
 							}
@@ -156,7 +156,7 @@ public class Ghost extends Objects{
 							if(Array[pos.x][pos.y - 1].equals("pacMan")){
 								Pacman.pacmanSounds("pacman_death.wav");
 								Pacman.lives--;
-								Array[12][21] = "pacMan";
+								Array[13][23] = "pacMan";
 								Array[pos.x][pos.y] = "blackSpace";
 								Array[pos.x][pos.y - 1] = ghostColor+"GhostAndBlackSpace";
 							}
@@ -198,7 +198,7 @@ public class Ghost extends Objects{
 							if(Array[pos.x][pos.y + 1].equals("pacMan")){
 								Pacman.pacmanSounds("pacman_death.wav");
 								Pacman.lives--;
-								Array[12][21] = "pacMan";
+								Array[13][23] = "pacMan";
 								Array[pos.x][pos.y] = "blackSpace";
 								Array[pos.x][pos.y + 1] = ghostColor+"GhostAndBlackSpace";
 							}
@@ -209,10 +209,12 @@ public class Ghost extends Objects{
 	
 	public void checkIllegalPos(){
 		getLocation();
-		if(Array[pos.x + 1][pos.y].endsWith("Wall")){
+		if(Array[pos.x + 1][pos.y].endsWith("Wall") || (pos.x == 6 && pos.y == 14)){
+			System.out.println(pos);
+			System.out.println(Array[pos.x + 1][pos.y]);
 			illegalPos.add("right");
 		}
-		if(Array[pos.x - 1][pos.y].endsWith("Wall")){
+		if(Array[pos.x - 1][pos.y].endsWith("Wall") || (pos.x == 20 && pos.y == 14)){
 			illegalPos.add("left");
 		}
 		if(Array[pos.x][pos.y - 1].endsWith("Wall")){
@@ -221,8 +223,9 @@ public class Ghost extends Objects{
 		if(Array[pos.x][pos.y + 1].endsWith("Wall")){
 			illegalPos.add("down");
 		}
+
 		if(!illegalPos.contains(lastPos))
-				illegalPos.add(lastPos);
+			illegalPos.add(lastPos);
 	}
 	
 	public void checkLastPos(){

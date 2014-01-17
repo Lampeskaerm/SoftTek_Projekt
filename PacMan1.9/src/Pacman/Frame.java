@@ -5,7 +5,6 @@ import javax.swing.JFrame;
 public class Frame extends JFrame{
 	public static int Width, Height;
 	public static void main(String[] args){
-		Scanner console = new Scanner(System.in);
 		new Frame();
 	}
 	
