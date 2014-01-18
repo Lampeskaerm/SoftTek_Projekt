@@ -289,9 +289,11 @@ public class Ghost extends Objects{
 		if(Array[pos.x][pos.y + 1].endsWith("Wall") || Array[pos.x][pos.y + 1].startsWith("cyan") || Array[pos.x][pos.y + 1].startsWith("red") || Array[pos.x][pos.y + 1].startsWith("orange") || Array[pos.x][pos.y + 1].startsWith("pink")){
 			illegalPos.add("down");
 		}
-
 		if(!illegalPos.contains(lastPos))
 			illegalPos.add(lastPos);
+		if(illegalPos.size() == 4){
+			illegalPos.remove(illegalPos.indexOf(lastPos));
+		}
 	}
 	
 	public void checkLastPos(){

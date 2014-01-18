@@ -223,9 +223,10 @@ public class Ghost extends Objects{
 		if(Array[pos.x][pos.y + 1].endsWith("Wall")){
 			illegalPos.add("down");
 		}
-
-		if(!illegalPos.contains(lastPos))
-			illegalPos.add(lastPos);
+		if(illegalPos.size() != 4){
+			if(!illegalPos.contains(lastPos))
+				illegalPos.add(lastPos);
+		}
 	}
 	
 	public void checkLastPos(){
