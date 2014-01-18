@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 public class Model extends JPanel implements Runnable {
 	Thread thread = new Thread(this);
 	
-	Frame frame;
+	PacmanDriver frame;
 	public boolean running = false;
 	public static String gameState = "gameOn";
 	private boolean enter = false;
@@ -21,8 +21,8 @@ public class Model extends JPanel implements Runnable {
     boolean orangePresent = false; 
     boolean fruit = false;
     public static int level = 0;
-    public static int numberOfPacDotsRemaining = 224;
-    public int fruitCounter = 0;
+    public static int numberOfPacDotsRemaining = 234;
+    int fruitCounter = 0;
 	
 	//Movement variables.
 	public boolean right = false;
@@ -50,13 +50,12 @@ public class Model extends JPanel implements Runnable {
 	private String [][] Array; //Maybe change to String array? to easier see what is going on.
 	
 	View view;
-	GetLocations getLocations;
-	Ghosts ghosts;
+	GhostsCalls ghosts;
 	Pacman pacman;
 	GameArray gameArray;
 	PlaySounds playSounds;
 	
-	public Model(Frame frame){
+	public Model(PacmanDriver frame){
 		Array = new String[Width][Height];
 		this.frame = frame;
 		frame.setSize(550, 750);
@@ -76,10 +75,9 @@ public class Model extends JPanel implements Runnable {
 		view = new View(Array, frame, Width, Height, redDir, cyanDir, pinkDir, orangeDir, pacmanDir);
 		frame.getContentPane().add(view);
 		view.initiateSpriteLoad();
-		pacman = new Pacman(Array, Width, Height, pacmanPos);
-		getLocations = new GetLocations(Array, Width, Height, pacmanPos, redGhostPos, cyanGhostPos, pinkGhostPos, orangeGhostPos);
-		ghosts = new Ghosts(Array, Width, Height, pacmanPos, redGhostPos, cyanGhostPos, pinkGhostPos, orangeGhostPos);
-		getLocations.getLocationPacMan();
+		pacman = new Pacman(pacmanPos, Array, Width, Height);
+		pacman.getLocation();
+		ghosts = new GhostsCalls(Array, Width, Height, pacmanPos, redGhostPos, cyanGhostPos, pinkGhostPos, orangeGhostPos);
 		level = 1;
 		running = true;
 		
@@ -87,14 +85,17 @@ public class Model extends JPanel implements Runnable {
 		
 		//updates:
 		while(running){
-			
-			//check if all ghosts are present, if not they respawn. 
-			ghosts.checkIfPresent(redPresent, cyanPresent, pinkPresent, orangePresent);
-			
-			pacman.movePacman(right, left, up, down);
-              
-            //Check if the level is beat. 
-            if(numberOfPacDotsRemaining == 0){ 
+
+			int dots = 0;
+			for(int i = 0; i < Width; i++){
+				for(int j = 0; j < Height; j++){
+					if(Array[i][j].endsWith("pacDot") || Array[i][j].endsWith("PacDot")){
+						dots++;
+					}
+				}
+			}
+			//Check if the level is beat. 
+            if(dots == 0){ 
             	try{
     				Thread.sleep(500);
     			} catch (InterruptedException e) {
@@ -102,15 +103,12 @@ public class Model extends JPanel implements Runnable {
     			}
             	gameArray.restartGameArray();
                 level++; 
-                numberOfPacDotsRemaining = 224;
-            } 
-            
-            //Fruits
-            if(224 - numberOfPacDotsRemaining == 70){
-            	fruit = true;
-            	numberOfPacDotsRemaining--;
             }
-            if(224 - numberOfPacDotsRemaining == 170){
+			
+			pacman.movePacman(right, left, up, down);
+                    
+            //Fruits
+            if(234 - numberOfPacDotsRemaining == 70 || 234 - numberOfPacDotsRemaining == 170){
             	fruit = true;
             	numberOfPacDotsRemaining--;
             }
@@ -164,10 +162,10 @@ public class Model extends JPanel implements Runnable {
             
             //Increment ghostCounter. 
             //changes the difficulty of the game as the level increases by making the ghosts move faster, ensures endless levels.
-            //level 1 = 50ms wait.
-            //level 2 = 45ms wait.
-            //level 3 = 34ms wait.
-            //level 4 = 28ms wait....
+            //level 1 = 500ms wait.
+            //level 2 = 450ms wait.
+            //level 3 = 340ms wait.
+            //level 4 = 280ms wait....
             	ghostCounter++; 
             	if(ghostCounter == (int)(50 * Math.pow(1.1, - (level - 1)))){
             		ghosts.Movements(); 
@@ -194,11 +192,11 @@ public class Model extends JPanel implements Runnable {
             }
 			
 			//update screen variables
-			this.pacmanPos = getLocations.pacmanPos;
-			this.redGhostPos = getLocations.redGhostPos;
-			this.cyanGhostPos = getLocations.cyanGhostPos;
-			this.pinkGhostPos = getLocations.pinkGhostPos;
-			this.orangeGhostPos = getLocations.orangeGhostPos;
+			this.pacmanPos = pacman.pos;
+			this.redGhostPos = ghosts.redGhost.pos;
+			this.cyanGhostPos = ghosts.cyanGhost.pos;
+			this.pinkGhostPos = ghosts.pinkGhost.pos;
+			this.orangeGhostPos = ghosts.orangeGhost.pos;
 			this.up = pacman.up;
 			this.down = pacman.down;
 			this.right = pacman.right;
@@ -210,16 +208,15 @@ public class Model extends JPanel implements Runnable {
             view.cyanDir = ghosts.cyanDir;
             view.pinkDir = ghosts.pinkDir;
             view.orangeDir = ghosts.orangeDir;
-			getLocations.Array = this.Array;
 			ghosts.Array = this.Array;
 			pacman.Array = this.Array;
 
 			
-			
 
-			
 			//update graphics.
 			frame.getContentPane().repaint();
+			
+			ghosts.checkIfPresent(redPresent, cyanPresent, pinkPresent, orangePresent);
 			
 			//Limits max fps:
 			try{

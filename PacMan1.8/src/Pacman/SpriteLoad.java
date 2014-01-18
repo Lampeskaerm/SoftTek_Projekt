@@ -22,7 +22,7 @@ public class SpriteLoad {
 	public void createSprites(){
 		final int width = 18;
 		final int height = 18;
-		final int rows = 5;
+		final int rows = 6;
 		final int cols = 9;
 		sprites = new BufferedImage[rows * cols];
 		

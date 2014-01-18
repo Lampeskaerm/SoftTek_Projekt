@@ -22,15 +22,12 @@ public class DirectionGenerator {
 				directions.remove(directions.indexOf(str));
 			}
 		}
-		for(String str : directions){
-			System.out.println("bum" + str);
-		}
 		if(directions.size() < 4){
 			int random = (int)(Math.random() * directions.size() + 1);
-			randomMovement = directions.get(random-1);
+			randomMovement = directions.get(random - 1);
 		} else {
 			int random = (int)(Math.random() * 4 + 1);
-			randomMovement = directions.get(random-1);
+			randomMovement = directions.get(random - 1);
 		}
 		directions = new ArrayList<String>(copy);
 	}

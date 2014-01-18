@@ -1,0 +1,30 @@
+package Pacman;
+
+import java.awt.List;
+import java.util.ArrayList;
+
+public class DirectionGenerator {
+	public String randomMovement = "";
+	public ArrayList<String> directions = new ArrayList<String>();
+	public ArrayList<String> copy; 
+	
+	public DirectionGenerator(){
+		directions.add("Up");
+		directions.add("down");
+		directions.add("left");
+		directions.add("right");
+	}
+	
+	public void randomDirection(ArrayList<String> illegalPos){
+		if(directions.contains(illegalPos)){
+				copy = new ArrayList<String>(directions);
+				directions.remove(directions.indexOf(illegalPos));
+				int random = (int)(Math.random() * 3 + 1);
+				randomMovement = directions.get(random-1);
+				directions = new ArrayList<String>(copy);
+		} else {
+			int random = (int)(Math.random() * 4 + 1);
+			randomMovement = directions.get(random-1);
+		}
+	}
+}

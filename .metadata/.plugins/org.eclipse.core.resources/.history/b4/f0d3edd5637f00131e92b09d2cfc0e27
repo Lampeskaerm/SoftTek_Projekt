@@ -1,0 +1,29 @@
+package Pacman;
+
+public class DirectionGenerator {
+	public String randomMovement = "";
+	public String[] directions = {"up", "down", "right", "left"}, copy = new String[4];
+	
+	public DirectionGenerator(){
+		
+	}
+	
+	public void randomDirection(String illegalPos){
+		for(String string : directions){
+			if(string.equals(illegalPos)){
+				copy = directions.clone();
+				System.out.println(copy);
+			}
+		}
+		 int random = (int)(Math.random() * 4 + 1);
+		 if(random == 1){
+			 randomMovement = "right";
+		 }else if(random == 2){
+			 randomMovement = "left";
+		 }else if(random == 3){
+			 randomMovement = "down";
+		 }else if(random == 4){
+			 randomMovement = "up";
+		 }
+	}
+}

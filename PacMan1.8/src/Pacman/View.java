@@ -11,13 +11,13 @@ import javax.swing.JPanel;
 public class View extends JPanel{
 	String[][] Array;
 	String redDir, cyanDir, pinkDir, orangeDir, pacmanDir;
-	Frame frame;
+	PacmanDriver frame;
 	int Width, Height, lives;
 	SpriteLoad spriteload;
 	
 	
 	
-	public View(String[][] Array, Frame frame, int Width, int Height, String redDir,
+	public View(String[][] Array, PacmanDriver frame, int Width, int Height, String redDir,
 				String cyanDir, String pinkDir, String orangeDir, String pacmanDir){
 		this.Array = Array;
 		this.frame = frame;
@@ -49,10 +49,7 @@ public class View extends JPanel{
                 g.setFont(font); 
                 g.drawString("GODMODE, GO! GO!", 260, 50);
             } 
-            //Draws how many lives are remaining. 
-            for(int i = 0; i < Pacman.lives; i++){ 
-            	g.drawImage(SpriteLoad.sprites[2], 20 + 20 * i, 650, this);  
-            } 
+            
             //Draws how many fruits are collected.
             for(int i = 0; i < Pacman.fruits; i++){ 
             	g.drawImage(SpriteLoad.sprites[27], 300 + 20 * i, 650, this);
@@ -85,7 +82,7 @@ public class View extends JPanel{
                     	}else if(pacmanDir.equals("left")){
                     		g.drawImage(SpriteLoad.sprites[0], 18 * i + 18, 18 * j + 67, this);
                     	}
-                    }else if(Array[i][j].equals("redGhostAndPacDot") || Array[i][j].equals("redGhostAndBlackSpace") || Array[i][j].equals("redGhostAndFruit")){ 
+                    }else if(Array[i][j].equals("redGhostAndPacDot") || Array[i][j].equals("redGhostAndBlackSpace") || Array[i][j].equals("redGhostAndFruit") || Array[i][j].equals("redGhostAndBigPacDot")){ 
                     	if(redDir.equals("up")){
                     		g.drawImage(SpriteLoad.sprites[9], 18 * i + 18, 18 * j + 67, this);
                     	}else if(redDir.equals("down")){
@@ -95,7 +92,7 @@ public class View extends JPanel{
                     	}else if(redDir.equals("right")){
                     		g.drawImage(SpriteLoad.sprites[12], 18 * i + 18, 18 * j + 67, this);
                     	}
-                    }else if(Array[i][j].equals("pinkGhostAndPacDot") || Array[i][j].equals("pinkGhostAndBlackSpace") || Array[i][j].equals("pinkGhostAndFruit")){ 
+                    }else if(Array[i][j].equals("pinkGhostAndPacDot") || Array[i][j].equals("pinkGhostAndBlackSpace") || Array[i][j].equals("pinkGhostAndFruit") || Array[i][j].equals("pinkGhostAndBigPacDot")){ 
                     	if(pinkDir.equals("up")){
                     		g.drawImage(SpriteLoad.sprites[13], 18 * i + 18, 18 * j + 67, this);
                     	}else if(pinkDir.equals("down")){
@@ -105,7 +102,7 @@ public class View extends JPanel{
                     	}else if(pinkDir.equals("right")){
                     		g.drawImage(SpriteLoad.sprites[16], 18 * i + 18, 18 * j + 67, this);
                     	}
-                    }else if(Array[i][j].equals("cyanGhostAndPacDot") || Array[i][j].equals("cyanGhostAndBlackSpace") || Array[i][j].equals("cyanGhostAndFruit")){ 
+                    }else if(Array[i][j].equals("cyanGhostAndPacDot") || Array[i][j].equals("cyanGhostAndBlackSpace") || Array[i][j].equals("cyanGhostAndFruit") || Array[i][j].equals("cyanGhostAndBigPacDot")){ 
                     	if(cyanDir.equals("up")){
                     		g.drawImage(SpriteLoad.sprites[17], 18 * i + 18, 18 * j + 67, this);
                     	}else if(cyanDir.equals("down")){
@@ -115,7 +112,7 @@ public class View extends JPanel{
                     	}else if(cyanDir.equals("right")){
                     		g.drawImage(SpriteLoad.sprites[20], 18 * i + 18, 18 * j + 67, this);
                     	}
-                    }else if(Array[i][j].equals("orangeGhostAndPacDot") || Array[i][j].equals("orangeGhostAndBlackSpace") || Array[i][j].equals("orangeGhostAndFruit")){ 
+                    }else if(Array[i][j].equals("orangeGhostAndPacDot") || Array[i][j].equals("orangeGhostAndBlackSpace") || Array[i][j].equals("orangeGhostAndFruit") || Array[i][j].equals("orangeGhostAndBigPacDot")){ 
                     	if(orangeDir.equals("up")){
                     		g.drawImage(SpriteLoad.sprites[21], 18 * i + 18, 18 * j + 67, this);
                     	}else if(orangeDir.equals("down")){
@@ -128,21 +125,9 @@ public class View extends JPanel{
                     }else if(Array[i][j].equals("bigPacDot")){ 
                         g.setColor(Color.white); 
                         g.fillRect(18 * i + 23, 18 * j + 73, 6, 6); 
-                    }else if(Array[i][j].equals("blackSpace") || Array[i][j].equals("superSecretBlackSpace")){ 
+                    }else if(Array[i][j].equals("blackSpace")){ 
                         g.setColor(Color.black); 
                         g.fillRect(18 * i + 17, 18 * j + 67, 18, 18); 
-                    }else if(Array[i][j].equals("horizontalWall")){ 
-                    	g.drawImage(SpriteLoad.sprites[37], 18 * i + 18, 18 * j + 67, this); 
-                    }else if(Array[i][j].equals("verticalWall")){
-                    	g.drawImage(SpriteLoad.sprites[36], 18 * i + 18, 18 * j + 67, this);
-                    }else if(Array[i][j].equals("downLeftWall")){
-                    	g.drawImage(SpriteLoad.sprites[41], 18 * i + 18, 18 * j + 67, this);
-                    }else if(Array[i][j].equals("upLeftWall")){
-                    	g.drawImage(SpriteLoad.sprites[38], 18 * i + 18, 18 * j + 67, this);
-                    }else if(Array[i][j].equals("downRightWall")){
-                    	g.drawImage(SpriteLoad.sprites[40], 18 * i + 18, 18 * j + 67, this);
-                    }else if(Array[i][j].equals("upRightWall")){
-                    	g.drawImage(SpriteLoad.sprites[39], 18 * i + 18, 18 * j + 67, this);
                     }else if(Array[i][j].equals("fruitAndBlackSpace") || Array[i][j].equals("fruitAndPacDot")){
                     	if(Model.level == 1){
                     		g.drawImage(SpriteLoad.sprites[27], 18 * i + 18, 18 * j + 67, this);
@@ -153,22 +138,69 @@ public class View extends JPanel{
                     	}else if(Model.level > 3){
                     		g.drawImage(SpriteLoad.sprites[30], 18 * i + 18, 18 * j + 67, this);
                     	}
+                    }else if(Model.level == 1 || Model.level > 3){
+                    	if(Array[i][j].equals("horizontalWall")){ 
+                    		g.drawImage(SpriteLoad.sprites[37], 18 * i + 18, 18 * j + 67, this); 
+                    	}else if(Array[i][j].equals("verticalWall")){
+                    		g.drawImage(SpriteLoad.sprites[36], 18 * i + 18, 18 * j + 67, this);
+                    	}else if(Array[i][j].equals("downLeftWall")){
+                    		g.drawImage(SpriteLoad.sprites[41], 18 * i + 18, 18 * j + 67, this);
+                    	}else if(Array[i][j].equals("upLeftWall")){
+                    		g.drawImage(SpriteLoad.sprites[38], 18 * i + 18, 18 * j + 67, this);
+                    	}else if(Array[i][j].equals("downRightWall")){
+                    		g.drawImage(SpriteLoad.sprites[40], 18 * i + 18, 18 * j + 67, this);
+                    	}else if(Array[i][j].equals("upRightWall")){
+                    		g.drawImage(SpriteLoad.sprites[39], 18 * i + 18, 18 * j + 67, this);
+                    	}
+                    }else if(Model.level == 2){
+                    	if(Array[i][j].equals("horizontalWall")){ 
+                    		g.drawImage(SpriteLoad.sprites[43], 18 * i + 18, 18 * j + 67, this); 
+                    	}else if(Array[i][j].equals("verticalWall")){
+                    		g.drawImage(SpriteLoad.sprites[42], 18 * i + 18, 18 * j + 67, this);
+                    	}else if(Array[i][j].equals("downLeftWall")){
+                    		g.drawImage(SpriteLoad.sprites[47], 18 * i + 18, 18 * j + 67, this);
+                    	}else if(Array[i][j].equals("upLeftWall")){
+                    		g.drawImage(SpriteLoad.sprites[44], 18 * i + 18, 18 * j + 67, this);
+                    	}else if(Array[i][j].equals("downRightWall")){
+                    		g.drawImage(SpriteLoad.sprites[46], 18 * i + 18, 18 * j + 67, this);
+                    	}else if(Array[i][j].equals("upRightWall")){
+                    		g.drawImage(SpriteLoad.sprites[45], 18 * i + 18, 18 * j + 67, this);
+                    	}
+                    }else if(Model.level == 3){
+                    	if(Array[i][j].equals("horizontalWall")){ 
+                    		g.drawImage(SpriteLoad.sprites[49], 18 * i + 18, 18 * j + 67, this); 
+                    	}else if(Array[i][j].equals("verticalWall")){
+                    		g.drawImage(SpriteLoad.sprites[48], 18 * i + 18, 18 * j + 67, this);
+                    	}else if(Array[i][j].equals("downLeftWall")){
+                    		g.drawImage(SpriteLoad.sprites[53], 18 * i + 18, 18 * j + 67, this);
+                    	}else if(Array[i][j].equals("upLeftWall")){
+                    		g.drawImage(SpriteLoad.sprites[50], 18 * i + 18, 18 * j + 67, this);
+                    	}else if(Array[i][j].equals("downRightWall")){
+                    		g.drawImage(SpriteLoad.sprites[52], 18 * i + 18, 18 * j + 67, this);
+                    	}else if(Array[i][j].equals("upRightWall")){
+                    		g.drawImage(SpriteLoad.sprites[51], 18 * i + 18, 18 * j + 67, this);
+                    	}
                     }
                 } 
+            } 
+          //Draws how many lives are remaining.
+          for(int i = 0; i < Pacman.lives; i++){ 
+        	   g.drawImage(SpriteLoad.sprites[2], 20 + 20 * i, 650, this);  
             } 
               
         //if game over. 
         }else if(Model.gameState.equals("gameOver")){ 
             g.setColor(Color.black); 
             g.fillRect(0, 0, this.frame.getWidth(), this.frame.getHeight()); 
-            g.setColor(Color.green); 
+            g.setColor(Color.white); 
             Font font = new Font("Arial", Font.BOLD, 30); 
             g.setFont(font); 
-            g.drawString("GAMEOVER!", 100, 50); 
-            g.drawString("PRESS SPACE", 90, 150); 
-            g.drawString("TO RESTART!", 95, 200); 
-            g.drawString("ESC TO EXIT", 100, 300); 
+            g.drawImage(SpriteLoad.sprites[8], 140, 130, this);
+            g.drawImage(SpriteLoad.sprites[8], 380, 130, this);
+            g.drawString("GAMEOVER!", 180, 150); 
+            g.drawString("PRESS SPACE", 160, 350); 
+            g.drawString("TO RESTART!", 170, 400); 
+            g.drawString("ESC TO EXIT", 170, 550); 
         }
 	}
-
 }

@@ -1,0 +1,264 @@
+package Pacman;
+
+import java.awt.Point;
+import java.util.ArrayList;
+
+public class Ghost extends Objects{
+	String ghostColor, lastPos = "none", ghost;
+	ArrayList<String> illegalPos;
+	
+	Pacman pacman;
+	DirectionGenerator dirGen;
+	
+	public Ghost(Point pos, String[][] Array, int Width, int Height, String ghostColor, Point pacmanPos) {
+		super(pos, Array, Width, Height);
+		this.ghostColor = ghostColor;
+		
+		pacman = new Pacman(pacmanPos, Array, Width, Height);
+		dirGen = new DirectionGenerator();
+	}
+	
+	public void getLocation(){
+		for(int i = 0; i < Width; i++){
+			for(int j = 0; j < Height; j++){
+				if(Array[i][j].equals(ghostColor + "GhostAndPacDot") || Array[i][j].equals(ghostColor+"GhostAndBlackSpace")){
+					pos.x = i;
+					pos.y = j;
+				}
+			}
+		}
+	}
+	
+	public void Movements(){
+		checkLastPos();
+		illegalPos = new ArrayList<String>();
+		checkIllegalPos();
+		dirGen.randomDirection(illegalPos);
+		ghost = dirGen.randomMovement;
+		lastPos = ghost;
+		getLocation();
+		pacman.getLocation();
+		
+		//move right.
+				if(ghost.equals("right")){
+					if(pos.x < Width - 1){
+						getLocation();
+						pacman.getLocation();
+						if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndPacDot") && Array[pos.x + 1][pos.y].equals("pacDot")){
+							Array[pos.x + 1][pos.y] = ghostColor+"GhostAndPacDot";
+							Array[pos.x][pos.y] = "pacDot";
+							
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndPacDot") && Array[pos.x + 1][pos.y].equals("blackSpace")){
+							Array[pos.x + 1][pos.y] = ghostColor+"GhostAndBlackSpace";
+							Array[pos.x][pos.y] = "pacDot";
+												
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndBlackSpace") && Array[pos.x + 1][pos.y].equals("blackSpace")){
+							Array[pos.x + 1][pos.y] = ghostColor+"GhostAndBlackSpace";
+							Array[pos.x][pos.y] = "blackSpace";
+															
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndBlackSpace") && Array[pos.x + 1][pos.y].equals("pacDot")){
+							Array[pos.x + 1][pos.y] = ghostColor+"GhostAndPacDot";
+							Array[pos.x][pos.y] = "blackSpace";
+							
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndPacDot") && Array[pos.x + 1][pos.y].equals("fruit")){
+							Array[pos.x + 1][pos.y] = ghostColor+"GhostAndFruit";
+							Array[pos.x][pos.y] = "pacDot";
+							
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndBlackSpace") && Array[pos.x + 1][pos.y].equals("fruit")){
+							Array[pos.x + 1][pos.y] = ghostColor+"GhostAndFruit";
+							Array[pos.x][pos.y] = "blackSpace";
+							
+						}else if(!Model.godMode){
+							if(Array[pos.x + 1][pos.y].equals("pacMan")){
+								Pacman.pacmanSounds("pacman_death.wav");
+								Pacman.lives--;
+								Array[12][21] = "pacMan";
+								Array[pos.x][pos.y] = "blackSpace";
+								Array[pos.x + 1][pos.y] = ghostColor+"GhostAndBlackSpace";
+							}
+						}
+					}
+				}
+						
+						
+				//move left.
+				if(ghost.equals("left")){
+					if(pos.x > 0){
+						getLocation();
+						pacman.getLocation();
+						if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndPacDot") && Array[pos.x - 1][pos.y].equals("pacDot")){
+							Array[pos.x - 1][pos.y] = ghostColor+"GhostAndPacDot";
+							Array[pos.x][pos.y] = "pacDot";
+							
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndPacDot") && Array[pos.x - 1][pos.y].equals("blackSpace")){
+							Array[pos.x - 1][pos.y] = ghostColor+"GhostAndBlackSpace";
+							Array[pos.x][pos.y] = "pacDot";
+													
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndBlackSpace") && Array[pos.x - 1][pos.y].equals("blackSpace")){
+							Array[pos.x - 1][pos.y] = ghostColor+"GhostAndBlackSpace";
+							Array[pos.x][pos.y] = "blackSpace";
+													
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndBlackSpace") && Array[pos.x - 1][pos.y].equals("pacDot")){
+							Array[pos.x - 1][pos.y] = ghostColor+"GhostAndPacDot";
+							Array[pos.x][pos.y] = "blackSpace";
+									
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndPacDot") && Array[pos.x - 1][pos.y].equals("fruit")){
+							Array[pos.x - 1][pos.y] = ghostColor+"GhostAndFruit";
+							Array[pos.x][pos.y] = "pacDot";
+							
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndBlackSpace") && Array[pos.x - 1][pos.y].equals("fruit")){
+							Array[pos.x - 1][pos.y] = ghostColor+"GhostAndFruit";
+							Array[pos.x][pos.y] = "blackSpace";
+							
+						}else if(!Model.godMode){
+							if(Array[pos.x - 1][pos.y].equals("pacMan")){
+								Pacman.pacmanSounds("pacman_death.wav");
+								Pacman.lives--;
+								Array[12][21] = "pacMan";
+								Array[pos.x][pos.y] = "blackSpace";
+								Array[pos.x - 1][pos.y] = ghostColor+"GhostAndBlackSpace";
+							}
+						}
+					}
+				}
+					
+					
+				//move up.
+				if(ghost.equals("up")){
+					if(pos.y > 0){
+						getLocation();
+						pacman.getLocation();
+						if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndPacDot") && Array[pos.x][pos.y - 1].equals("pacDot")){
+							Array[pos.x][pos.y - 1] = ghostColor+"GhostAndPacDot";
+							Array[pos.x][pos.y] = "pacDot";
+							
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndPacDot") && Array[pos.x][pos.y - 1].equals("blackSpace")){
+							Array[pos.x][pos.y - 1] = ghostColor+"GhostAndBlackSpace";
+							Array[pos.x][pos.y] = "pacDot";
+													
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndBlackSpace") && Array[pos.x][pos.y - 1].equals("blackSpace")){
+							Array[pos.x][pos.y - 1] = ghostColor+"GhostAndBlackSpace";
+							Array[pos.x][pos.y] = "blackSpace";
+													
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndBlackSpace") && Array[pos.x][pos.y - 1].equals("pacDot")){
+							Array[pos.x][pos.y - 1] = ghostColor+"GhostAndPacDot";
+							Array[pos.x][pos.y] = "blackSpace";
+							
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndPacDot") && Array[pos.x][pos.y - 1].equals("fruit")){
+							Array[pos.x][pos.y - 1] = ghostColor+"GhostAndFruit";
+							Array[pos.x][pos.y] = "pacDot";
+							
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndBlackSpace") && Array[pos.x][pos.y - 1].equals("fruit")){
+							Array[pos.x - 1][pos.y] = ghostColor+"GhostAndFruit";
+							Array[pos.x][pos.y] = "blackSpace";
+							
+						}else if(!Model.godMode){
+							if(Array[pos.x][pos.y - 1].equals("pacMan")){
+								Pacman.pacmanSounds("pacman_death.wav");
+								Pacman.lives--;
+								Array[12][21] = "pacMan";
+								Array[pos.x][pos.y] = "blackSpace";
+								Array[pos.x][pos.y - 1] = ghostColor+"GhostAndBlackSpace";
+							}
+						}
+					}
+				}
+					
+						
+				//move down.
+				if(ghost.equals("down")){
+					if(pos.y < Height - 1){
+						getLocation();
+						pacman.getLocation();
+						if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndPacDot") && Array[pos.x][pos.y + 1].equals("pacDot")){
+							Array[pos.x][pos.y + 1] = ghostColor+"GhostAndPacDot";
+							Array[pos.x][pos.y] = "pacDot";
+										
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndPacDot") && Array[pos.x][pos.y + 1].equals("blackSpace")){
+							Array[pos.x][pos.y + 1] = ghostColor+"GhostAndBlackSpace";
+							Array[pos.x][pos.y] = "pacDot";
+															
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndBlackSpace") && Array[pos.x][pos.y + 1].equals("blackSpace")){
+							Array[pos.x][pos.y + 1] = ghostColor+"GhostAndBlackSpace";
+							Array[pos.x][pos.y] = "blackSpace";
+													
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndBlackSpace") && Array[pos.x][pos.y + 1].equals("pacDot")){
+							Array[pos.x][pos.y + 1] = ghostColor+"GhostAndPacDot";
+							Array[pos.x][pos.y] = "blackSpace";
+							
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndPacDot") && Array[pos.x][pos.y + 1].equals("fruit")){
+							Array[pos.x][pos.y + 1] = ghostColor+"GhostAndFruit";
+							Array[pos.x][pos.y] = "pacDot";
+							
+						}else if(Array[pos.x][pos.y].equals(ghostColor+"GhostAndBlackSpace") && Array[pos.x][pos.y + 1].equals("fruit")){
+							Array[pos.x + 1][pos.y] = ghostColor+"GhostAndFruit";
+							Array[pos.x][pos.y] = "blackSpace";
+							
+						}else if(!Model.godMode){
+							if(Array[pos.x][pos.y + 1].equals("pacMan")){
+								Pacman.pacmanSounds("pacman_death.wav");
+								Pacman.lives--;
+								Array[12][21] = "pacMan";
+								Array[pos.x][pos.y] = "blackSpace";
+								Array[pos.x][pos.y + 1] = ghostColor+"GhostAndBlackSpace";
+							}
+						}
+					}
+				}
+	}
+	
+	public void checkIllegalPos(){
+		getLocation();
+		int wallNo = 0;
+		String str = "";
+		if(Array[pos.x + 1][pos.y].endsWith("Wall") || (pos.x == 6 && pos.y == 14)){
+			illegalPos.add("right");
+			wallNo += 1;
+			str += "right";
+		}
+		if(Array[pos.x - 1][pos.y].endsWith("Wall") || (pos.x == 20 && pos.y == 14)){
+			illegalPos.add("left");
+			wallNo += 1;
+			str += "left";
+		}
+		if(Array[pos.x][pos.y - 1].endsWith("Wall")){
+			illegalPos.add("up");
+			wallNo += 1;
+			str += "up";
+		}
+		if(Array[pos.x][pos.y + 1].endsWith("Wall")){
+			illegalPos.add("down");
+			wallNo += 1;
+			str += "down";
+		}
+		if(wallNo == 2){
+			if(str.contains("rightleft") && ((Array[pos.x][pos.y - 1].contains("Ghost") && lastPos != "down") || (Array[pos.x][pos.y + 1].contains("Ghost") && lastPos != "up"))){
+				illegalPos.add(lastPos);
+			}else if(str.contains("updown") && ((Array[pos.x - 1][pos.y].contains("Ghost") && lastPos != "right") || (Array[pos.x + 1][pos.y].contains("Ghost") && lastPos != "left"))){
+				illegalPos.add(lastPos);
+			}else if(str.contains("rightup") && ((Array[pos.x - 1][pos.y].contains("Ghost") && lastPos != "down") || (Array[pos.x][pos.y + 1].contains("Ghost") && lastPos != "left"))){
+				illegalPos.add(lastPos);
+			}else if(str.contains("rightdown") && ((Array[pos.x - 1][pos.y].contains("Ghost") && lastPos != "up") || (Array[pos.x][pos.y + 1].contains("Ghost") && lastPos != "left"))){
+				illegalPos.add(lastPos);
+			}else if(str.contains("leftup") && ((Array[pos.x + 1][pos.y].contains("Ghost") && lastPos != "down") || (Array[pos.x][pos.y - 1].contains("Ghost") && lastPos != "right"))){
+				illegalPos.add(lastPos);
+			}else if(str.contains("leftdown") && ((Array[pos.x + 1][pos.y].contains("Ghost") && lastPos != "up") || (Array[pos.x][pos.y - 1].contains("Ghost") && lastPos != "right"))){
+				illegalPos.add(lastPos);
+			}
+		}
+		if(!illegalPos.contains(lastPos))
+				illegalPos.add(lastPos);
+	}
+	
+	public void checkLastPos(){
+		if(lastPos == "right"){
+			lastPos = "left";
+		}else if(lastPos == "left"){
+			lastPos = "right";
+		}else if(lastPos =="up"){
+			lastPos = "down";
+		}else if(lastPos == "down"){
+			lastPos = "up";
+		}
+	}
+}

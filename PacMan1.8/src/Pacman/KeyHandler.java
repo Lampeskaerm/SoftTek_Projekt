@@ -13,7 +13,7 @@ public class KeyHandler implements KeyListener {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		}
+	}
 
 	
 	public void keyReleased(KeyEvent e) {	
@@ -43,8 +43,6 @@ public class KeyHandler implements KeyListener {
 			this.keyTyped.KeyEnter();
 		}
 	}
-
-
 
 	public void keyTyped(KeyEvent e) {
 	}

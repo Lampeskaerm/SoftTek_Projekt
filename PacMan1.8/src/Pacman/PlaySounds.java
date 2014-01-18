@@ -18,7 +18,7 @@ public class PlaySounds {
 		      try {
 		        Clip clip = AudioSystem.getClip();
 		        AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-		        		Frame.class.getResourceAsStream("Sounds/" + url));
+		        		PacmanDriver.class.getResourceAsStream("Sounds/" + url));
 		        clip.open(inputStream);
 		        clip.start(); 
 		      } catch (Exception e) {

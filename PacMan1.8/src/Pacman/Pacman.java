@@ -2,167 +2,168 @@ package Pacman;
 
 import java.awt.Point;
 
-public class Pacman {
-	PacmanLocation pacmanLoc;
+public class Pacman extends Objects{
 	static PlaySounds playSounds;
 	
-	Point pacmanPos;
-	String[][] Array;
 	boolean right, left, up, down;
-	public int Width, Height;
 	public static int lives = 3;
 	int godModeCounter = 0;
     public static int score = 0;
     public static int fruits = 0;
 
 	
-	public Pacman (String[][] Array, int Width, int Height, Point pacmanPos){
-		this.pacmanPos = pacmanPos;
-		this.Array = Array;
-		this.Width = Width;
-		this.Height = Height;
-		
-		pacmanLoc = new PacmanLocation(Array, Width, Height, pacmanPos);
+	public Pacman (Point pos, String[][] Array, int Width, int Height){
+		super(pos, Array, Width, Height);
+
 		playSounds = new PlaySounds();
 	}
 	
-	public Pacman(){
-		
+	public void getLocation(){
+		for(int i = 0; i < Width; i++){
+			for(int j = 0; j < Height; j++){
+				if(Array[i][j].equals("pacMan")){
+					pos.x = i;
+					pos.y = j;
+				}
+			}
+		}
 	}
 	
-	public void movePacman( boolean right, boolean left, boolean up, boolean down){
-		
+	public void movePacman( boolean right, boolean left, boolean up, boolean down){	
 		//movements: 
         //Move right. 
-        while(right){ 
-            pacmanLoc.getLocation(); 
-            if(pacmanPos.x < Width - 1){ 
-                if(pacmanPos.x + 1 == 10 && pacmanPos.y == 14){ 
+        while(right){
+            getLocation(); 
+            if(pos.x < Width - 1){ 
+                if(pos.x + 1 == 10 && pos.y == 14){ 
                     right = false; 
                 }else{ 
-                    if(Array[pacmanPos.x + 1][pacmanPos.y].equals("bigPacDot")){ 
-                    	Model.numberOfPacDotsRemaining--;
+                    if(Array[pos.x + 1][pos.y].equals("bigPacDot")){ 
                     	score += 50;
                         Model.godMode = true;
                         pacmanSounds("pacman_chomp.wav");
-                        Array[pacmanPos.x + 1][pacmanPos.y] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                        Array[pos.x + 1][pos.y] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace"; 
                         right = false; 
-                    }else if(Array[pacmanPos.x + 1][pacmanPos.y].equals("pacDot")){ 
-                    	Model.numberOfPacDotsRemaining--;
+                    }else if(Array[pos.x + 1][pos.y].equals("pacDot")){ 
                     	score += 10;
                     	pacmanSounds("pacman_chomp.wav");
-                    	Array[pacmanPos.x + 1][pacmanPos.y] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                    	Array[pos.x + 1][pos.y] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace"; 
                         right = false; 
-                    }else if(Array[pacmanPos.x + 1][pacmanPos.y].equals("blackSpace")){
-                    	Array[pacmanPos.x + 1][pacmanPos.y] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                    }else if(Array[pos.x + 1][pos.y].equals("blackSpace")){
+                    	Array[pos.x + 1][pos.y] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace"; 
                         right = false;
-                    }else if(Array[pacmanPos.x + 1][pacmanPos.y].equals("redGhostAndPacDot") || Array[pacmanPos.x + 1][pacmanPos.y].equals("cyanGhostAndPacDot") || Array[pacmanPos.x + 1][pacmanPos.y].equals("pinkGhostAndPacDot") || Array[pacmanPos.x + 1][pacmanPos.y].equals("orangeGhostAndPacDot")){ 
+                    }else if(Array[pos.x + 1][pos.y].equals("redGhostAndPacDot") || Array[pos.x + 1][pos.y].equals("cyanGhostAndPacDot") || Array[pos.x + 1][pos.y].equals("pinkGhostAndPacDot") || Array[pos.x + 1][pos.y].equals("orangeGhostAndPacDot")){ 
                         if(Model.godMode){
                         	score += 200;
                         	pacmanSounds("pacman_eatghost.wav");
-                            Array[pacmanPos.x + 1][pacmanPos.y] = "pacMan"; 
-                            Array[pacmanPos.x][pacmanPos.y] = "blackspace"; 
+                            Array[pos.x + 1][pos.y] = "pacMan"; 
+                            Array[pos.x][pos.y] = "blackSpace"; 
                         } 
                         if(!Model.godMode){ 
-                            Array[pacmanPos.x][pacmanPos.y] = "pacDot";
+                            Array[pos.x][pos.y] = "pacDot";
                             pacmanSounds("pacman_death.wav");
+                            right = false;
                             ResetPacManAndLoseLife(); 
                         } 
                         right = false; 
-                    }else if(Array[pacmanPos.x + 1][pacmanPos.y].equals("redGhostAndBlackSpace") || Array[pacmanPos.x + 1][pacmanPos.y].equals("cyanGhostAndBlackSpace") || Array[pacmanPos.x + 1][pacmanPos.y].equals("pinkGhostAndBlackSpace") || Array[pacmanPos.x + 1][pacmanPos.y].equals("orangeGhostAndBlackSpace")){ 
+                    }else if(Array[pos.x + 1][pos.y].equals("redGhostAndBlackSpace") || Array[pos.x + 1][pos.y].equals("cyanGhostAndBlackSpace") || Array[pos.x + 1][pos.y].equals("pinkGhostAndBlackSpace") || Array[pos.x + 1][pos.y].equals("orangeGhostAndBlackSpace")){ 
                         if(Model.godMode){ 
                         	score += 200;
                         	pacmanSounds("pacman_eatghost.wav");
-                            Array[pacmanPos.x + 1][pacmanPos.y] = "pacMan"; 
-                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            Array[pos.x + 1][pos.y] = "pacMan"; 
+                            Array[pos.x][pos.y] = "blackSpace"; 
                         } 
                         if(!Model.godMode){ 
-                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace";
+                            Array[pos.x][pos.y] = "blackSpace";
                             pacmanSounds("pacman_death.wav");
+                            right = false;
                             ResetPacManAndLoseLife(); 
                         } 
                         right = false; 
-                    }else if(Array[pacmanPos.x + 1][pacmanPos.y].equals("portal")){ 
+                    }else if(Array[pos.x + 1][pos.y].equals("portal")){ 
                         Array[1][14] = "pacMan"; 
                         Array[25][14] = "blackSpace"; 
                         right = false; 
-                    }else if(Array[pacmanPos.x + 1][pacmanPos.y].equals("fruitAndBlackSpace") || Array[pacmanPos.x + 1][pacmanPos.y].equals("fruitAndPacDot")){
+                    }else if(Array[pos.x + 1][pos.y].equals("fruitAndBlackSpace") || Array[pos.x + 1][pos.y].equals("fruitAndPacDot")){
                     	fruits++;
-                    	Array[pacmanPos.x + 1][pacmanPos.y] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace";
+                    	Array[pos.x + 1][pos.y] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace";
                         score += 2 * (Model.level * 100) - 100;
+                        right = false;
                     }else{ 
                         right = false; 
                     } 
                 } 
             } 
-        } 
+        }
+	
           
           
         //Move left. 
         while(left){ 
-            pacmanLoc.getLocation(); 
-            if(pacmanPos.x > 0){ 
-                if(pacmanPos.x - 1 == 16 && pacmanPos.y == 14){ 
+            getLocation(); 
+            if(pos.x > 0){ 
+                if(pos.x - 1 == 16 && pos.y == 14){ 
                     left = false; 
                 }else{ 
-                    if(Array[pacmanPos.x - 1][pacmanPos.y].equals("bigPacDot")){
-                    	Model.numberOfPacDotsRemaining--;
+                    if(Array[pos.x - 1][pos.y].equals("bigPacDot")){
                     	score += 50;
                     	Model.godMode = true; 
                         pacmanSounds("pacman_chomp.wav");
-                        Array[pacmanPos.x - 1][pacmanPos.y] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                        Array[pos.x - 1][pos.y] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace"; 
                         left = false; 
-                    }else if(Array[pacmanPos.x - 1][pacmanPos.y].equals("pacDot")){ 
-                    	Model.numberOfPacDotsRemaining--;
+                    }else if(Array[pos.x - 1][pos.y].equals("pacDot")){ 
                     	score += 10;
                     	pacmanSounds("pacman_chomp.wav");
-                    	Array[pacmanPos.x - 1][pacmanPos.y] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                    	Array[pos.x - 1][pos.y] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace"; 
                         left = false;
-                    }else if(Array[pacmanPos.x - 1][pacmanPos.y].equals("blackSpace")){
-                    	Array[pacmanPos.x - 1][pacmanPos.y] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                    }else if(Array[pos.x - 1][pos.y].equals("blackSpace")){
+                    	Array[pos.x - 1][pos.y] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace"; 
                         left = false;
-                    }else if(Array[pacmanPos.x - 1][pacmanPos.y].equals("redGhostAndPacDot") || Array[pacmanPos.x - 1][pacmanPos.y].equals("cyanGhostAndPacDot") || Array[pacmanPos.x - 1][pacmanPos.y].equals("pinkGhostAndPacDot") || Array[pacmanPos.x - 1][pacmanPos.y].equals("orangeGhostAndPacDot")){ 
+                    }else if(Array[pos.x - 1][pos.y].equals("redGhostAndPacDot") || Array[pos.x - 1][pos.y].equals("cyanGhostAndPacDot") || Array[pos.x - 1][pos.y].equals("pinkGhostAndPacDot") || Array[pos.x - 1][pos.y].equals("orangeGhostAndPacDot")){ 
                         if(Model.godMode){ 
                         	score += 200;
                         	pacmanSounds("pacman_eatghost.wav");
-                            Array[pacmanPos.x - 1][pacmanPos.y] = "pacMan"; 
-                            Array[pacmanPos.x][pacmanPos.y] = "blackspace"; 
+                            Array[pos.x - 1][pos.y] = "pacMan"; 
+                            Array[pos.x][pos.y] = "blackSpace"; 
                         } 
                         if(!Model.godMode){ 
-                            Array[pacmanPos.x][pacmanPos.y] = "pacDot"; 
+                            Array[pos.x][pos.y] = "pacDot"; 
                             pacmanSounds("pacman_death.wav");
+                            left = false;
                             ResetPacManAndLoseLife(); 
                         } 
                         left = false; 
-                    }else if(Array[pacmanPos.x - 1][pacmanPos.y].equals("redGhostAndBlackSpace") || Array[pacmanPos.x - 1][pacmanPos.y].equals("cyanGhostAndBlackSpace") || Array[pacmanPos.x - 1][pacmanPos.y].equals("pinkGhostAndBlackSpace") || Array[pacmanPos.x - 1][pacmanPos.y].equals("orangeGhostAndBlackSpace")){ 
+                    }else if(Array[pos.x - 1][pos.y].equals("redGhostAndBlackSpace") || Array[pos.x - 1][pos.y].equals("cyanGhostAndBlackSpace") || Array[pos.x - 1][pos.y].equals("pinkGhostAndBlackSpace") || Array[pos.x - 1][pos.y].equals("orangeGhostAndBlackSpace")){ 
                         if(Model.godMode){ 
                         	score += 200;
                         	pacmanSounds("pacman_eatghost.wav");
-                            Array[pacmanPos.x - 1][pacmanPos.y] = "pacMan"; 
-                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            Array[pos.x - 1][pos.y] = "pacMan"; 
+                            Array[pos.x][pos.y] = "blackSpace"; 
                         } 
                         if(!Model.godMode){ 
-                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            Array[pos.x][pos.y] = "blackSpace"; 
                             pacmanSounds("pacman_death.wav");
+                            left = false;
                             ResetPacManAndLoseLife(); 
                         } 
                         left = false; 
-                    }else if(Array[pacmanPos.x - 1][pacmanPos.y].equals("portal")){ 
+                    }else if(Array[pos.x - 1][pos.y].equals("portal")){ 
                         Array[25][14] = "pacMan"; 
                         Array[1][14] = "blackSpace"; 
                         left = false; 
-                    }else if(Array[pacmanPos.x - 1][pacmanPos.y].equals("fruitAndBlackSpace") || Array[pacmanPos.x - 1][pacmanPos.y].equals("fruitAndPacDot")){
+                    }else if(Array[pos.x - 1][pos.y].equals("fruitAndBlackSpace") || Array[pos.x - 1][pos.y].equals("fruitAndPacDot")){
                     	fruits++;
-                    	Array[pacmanPos.x - 1][pacmanPos.y] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace";
+                    	Array[pos.x - 1][pos.y] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace";
                         score += 2 * (Model.level * 100) - 100;
+                        left = false;
                     }else{ 
                     left = false; 
                     } 
@@ -175,61 +176,62 @@ public class Pacman {
           
         //Move up. 
         while(up){ 
-            pacmanLoc.getLocation(); 
-            if(pacmanPos.y > 0){ 
-                if(pacmanPos.x == 13 && pacmanPos.y - 1 == 16){ 
+            getLocation(); 
+            if(pos.y > 0){ 
+                if(pos.x == 13 && pos.y - 1 == 16){ 
                     up = false; 
                 }else{ 
-                    if(Array[pacmanPos.x][pacmanPos.y - 1].equals("bigPacDot")){ 
-                    	Model.numberOfPacDotsRemaining--;
+                    if(Array[pos.x][pos.y - 1].equals("bigPacDot")){ 
                     	score += 50;
                     	Model.godMode = true; 
                         pacmanSounds("pacman_chomp.wav");
-                        Array[pacmanPos.x][pacmanPos.y - 1] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                        Array[pos.x][pos.y - 1] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace"; 
                         up = false; 
-                    }else if(Array[pacmanPos.x][pacmanPos.y - 1].equals("pacDot")){ 
-                    	Model.numberOfPacDotsRemaining--;
+                    }else if(Array[pos.x][pos.y - 1].equals("pacDot")){ 
                     	score += 10;
                     	pacmanSounds("pacman_chomp.wav");
-                        Array[pacmanPos.x][pacmanPos.y - 1] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                        Array[pos.x][pos.y - 1] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace"; 
                         up = false;
-                    }else if(Array[pacmanPos.x][pacmanPos.y - 1].equals("blackSpace")){
-                    	Array[pacmanPos.x][pacmanPos.y - 1] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                    }else if(Array[pos.x][pos.y - 1].equals("blackSpace")){
+                    	Array[pos.x][pos.y - 1] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace"; 
                         up = false;
-                    }else if(Array[pacmanPos.x][pacmanPos.y - 1].equals("redGhostAndPacDot") || Array[pacmanPos.x][pacmanPos.y - 1].equals("cyanGhostAndPacDot") || Array[pacmanPos.x][pacmanPos.y - 1].equals("pinkGhostAndPacDot") || Array[pacmanPos.x][pacmanPos.y - 1].equals("orangeGhostAndPacDot")){ 
+                    }else if(Array[pos.x][pos.y - 1].equals("redGhostAndPacDot") || Array[pos.x][pos.y - 1].equals("cyanGhostAndPacDot") || Array[pos.x][pos.y - 1].equals("pinkGhostAndPacDot") || Array[pos.x][pos.y - 1].equals("orangeGhostAndPacDot")){ 
                         if(Model.godMode){ 
                         	score += 200;
                         	pacmanSounds("pacman_eatghost.wav");
-                            Array[pacmanPos.x][pacmanPos.y - 1] = "pacMan"; 
-                            Array[pacmanPos.x][pacmanPos.y] = "blackspace"; 
+                            Array[pos.x][pos.y - 1] = "pacMan"; 
+                            Array[pos.x][pos.y] = "blackSpace"; 
                         } 
                         if(!Model.godMode){ 
-                            Array[pacmanPos.x][pacmanPos.y] = "pacDot"; 
+                            Array[pos.x][pos.y] = "pacDot"; 
                             pacmanSounds("pacman_death.wav");
+                            up = false;
                             ResetPacManAndLoseLife(); 
                         } 
                         up = false; 
-                    }else if(Array[pacmanPos.x][pacmanPos.y - 1].equals("redGhostAndBlackSpace") || Array[pacmanPos.x][pacmanPos.y - 1].equals("cyanGhostAndBlackSpace") || Array[pacmanPos.x][pacmanPos.y - 1].equals("pinkGhostAndBlackSpace") || Array[pacmanPos.x][pacmanPos.y - 1].equals("orangeGhostAndBlackSpace")){ 
+                    }else if(Array[pos.x][pos.y - 1].equals("redGhostAndBlackSpace") || Array[pos.x][pos.y - 1].equals("cyanGhostAndBlackSpace") || Array[pos.x][pos.y - 1].equals("pinkGhostAndBlackSpace") || Array[pos.x][pos.y - 1].equals("orangeGhostAndBlackSpace")){ 
                         if(Model.godMode){ 
                         	score += 200;
                         	pacmanSounds("pacman_eatghost.wav");
-                            Array[pacmanPos.x][pacmanPos.y - 1] = "pacMan"; 
-                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            Array[pos.x][pos.y - 1] = "pacMan"; 
+                            Array[pos.x][pos.y] = "blackSpace"; 
                         } 
                         if(!Model.godMode){ 
-                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            Array[pos.x][pos.y] = "blackSpace"; 
                             pacmanSounds("pacman_death.wav");
+                            up = false;
                             ResetPacManAndLoseLife(); 
                         } 
                         up = false; 
-                    }else if(Array[pacmanPos.x][pacmanPos.y - 1].equals("fruitAndBlackSpace") || Array[pacmanPos.x][pacmanPos.y - 1].equals("fruitAndPacDot")){
+                    }else if(Array[pos.x][pos.y - 1].equals("fruitAndBlackSpace") || Array[pos.x][pos.y - 1].equals("fruitAndPacDot")){
                     	fruits++;
-                    	Array[pacmanPos.x][pacmanPos.y - 1] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace";
+                    	Array[pos.x][pos.y - 1] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace";
                         score += 2 * (Model.level * 100) - 100;
+                        up = false;
                     }else{ 
                     up = false; 
                     } 
@@ -241,67 +243,69 @@ public class Pacman {
           
         //move down. 
         while(down){ 
-            pacmanLoc.getLocation(); 
-            if(pacmanPos.y < Height - 1){ 
-                if(pacmanPos.x == 13 && pacmanPos.y + 1 == 12){ 
+            getLocation(); 
+            if(pos.y < Height - 1){ 
+                if(pos.x == 13 && pos.y + 1 == 12){ 
                     down = false; 
                 }else{ 
-                    if(Array[pacmanPos.x][pacmanPos.y + 1].equals("bigPacDot")){ 
-                    	Model.numberOfPacDotsRemaining--;
+                    if(Array[pos.x][pos.y + 1].equals("bigPacDot")){ 
                     	score += 50;
                     	Model.godMode = true; 
                         pacmanSounds("pacman_chomp.wav");
-                        Array[pacmanPos.x][pacmanPos.y + 1] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                        Array[pos.x][pos.y + 1] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace"; 
                         down = false; 
-                    }else if(Array[pacmanPos.x][pacmanPos.y + 1].equals("pacDot")){
-                    	Model.numberOfPacDotsRemaining--;
+                    }else if(Array[pos.x][pos.y + 1].equals("pacDot")){
                     	score += 10;
                     	pacmanSounds("pacman_chomp.wav");
-                        Array[pacmanPos.x][pacmanPos.y + 1] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                        Array[pos.x][pos.y + 1] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace"; 
                         down = false; 
-                    }else if(Array[pacmanPos.x][pacmanPos.y + 1].equals("blackSpace")){
-                    	Array[pacmanPos.x][pacmanPos.y + 1] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                    }else if(Array[pos.x][pos.y + 1].equals("blackSpace")){
+                    	Array[pos.x][pos.y + 1] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace"; 
                         down = false; 
-                    }else if(Array[pacmanPos.x][pacmanPos.y + 1].equals("redGhostAndPacDot") || Array[pacmanPos.x][pacmanPos.y + 1].equals("cyanGhostAndPacDot") || Array[pacmanPos.x][pacmanPos.y + 1].equals("pinkGhostAndPacDot") || Array[pacmanPos.x][pacmanPos.y + 1].equals("orangeGhostAndPacDot")){ 
+                    }else if(Array[pos.x][pos.y + 1].equals("redGhostAndPacDot") || Array[pos.x][pos.y + 1].equals("cyanGhostAndPacDot") || Array[pos.x][pos.y + 1].equals("pinkGhostAndPacDot") || Array[pos.x][pos.y + 1].equals("orangeGhostAndPacDot")){ 
                         if(Model.godMode){ 
                         	score += 200;
                         	pacmanSounds("pacman_eatghost.wav");
-                            Array[pacmanPos.x][pacmanPos.y + 1] = "pacMan"; 
-                            Array[pacmanPos.x][pacmanPos.y] = "blackspace";
+                            Array[pos.x][pos.y + 1] = "pacMan"; 
+                            Array[pos.x][pos.y] = "blackSpace";
                         } 
                         if(! Model.godMode){ 
-                            Array[pacmanPos.x][pacmanPos.y] = "pacDot";
+                            Array[pos.x][pos.y] = "pacDot";
                             pacmanSounds("pacman_death.wav");
+                            down = false;
                             ResetPacManAndLoseLife(); 
                         } 
                         down = false; 
-                    }else if(Array[pacmanPos.x][pacmanPos.y + 1].equals("redGhostAndBlackSpace") || Array[pacmanPos.x][pacmanPos.y + 1].equals("cyanGhostAndBlackSpace") || Array[pacmanPos.x][pacmanPos.y + 1].equals("pinkGhostAndBlackSpace") || Array[pacmanPos.x][pacmanPos.y + 1].equals("orangeGhostAndBlackSpace")){ 
+                    }else if(Array[pos.x][pos.y + 1].equals("redGhostAndBlackSpace") || Array[pos.x][pos.y + 1].equals("cyanGhostAndBlackSpace") || Array[pos.x][pos.y + 1].equals("pinkGhostAndBlackSpace") || Array[pos.x][pos.y + 1].equals("orangeGhostAndBlackSpace")){ 
                         if(Model.godMode){ 
                         	score += 200;
                         	pacmanSounds("pacman_eatghost.wav");
-                            Array[pacmanPos.x][pacmanPos.y + 1] = "pacMan"; 
-                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            Array[pos.x][pos.y + 1] = "pacMan"; 
+                            Array[pos.x][pos.y] = "blackSpace"; 
                         } 
                         if(!Model.godMode){ 
-                            Array[pacmanPos.x][pacmanPos.y] = "blackSpace"; 
+                            Array[pos.x][pos.y] = "blackSpace"; 
                             pacmanSounds("pacman_death.wav");
+                            down = false;
                             ResetPacManAndLoseLife(); 
                         } 
                         down = false; 
-                    }else if(Array[pacmanPos.x][pacmanPos.y + 1].equals("fruitAndBlackSpace") || Array[pacmanPos.x][pacmanPos.y + 1].equals("fruitAndPacDot")){
-                    	Array[pacmanPos.x][pacmanPos.y + 1] = "pacMan"; 
-                        Array[pacmanPos.x][pacmanPos.y] = "blackSpace";
+                    }else if(Array[pos.x][pos.y + 1].equals("fruitAndBlackSpace") || Array[pos.x][pos.y + 1].equals("fruitAndPacDot")){
+                    	Array[pos.x][pos.y + 1] = "pacMan"; 
+                        Array[pos.x][pos.y] = "blackSpace";
                         score += 2 * (Model.level * 100) - 100;
                         fruits++;
+                        down = false; 
                     }else{ 
                     down = false; 
                     } 
                 } 
             } 
         }
+		
         
         //Check god mode and increment god mode counter. 
         if(Model.godMode){ 
@@ -312,6 +316,7 @@ public class Pacman {
             } 
         }
 	}
+	
 	
 	//reset pacman and loose a life.
 	public void ResetPacManAndLoseLife(){ 
@@ -330,11 +335,10 @@ public class Pacman {
             } 
         }
 		if(!pacmanPresent){
-			Array[12][21] = "pacMan"; 
+			Array[13][23] = "pacMan"; 
 		}
 	}
-	
-	
+		
 	public static void pacmanSounds(String state){
 		playSounds.playSound(state);
 	}
