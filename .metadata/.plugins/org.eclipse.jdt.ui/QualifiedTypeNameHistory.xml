@@ -10,4 +10,7 @@
 <fullyQualifiedTypeName name="java.awt.List"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
 <fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+<fullyQualifiedTypeName name="java.awt.Toolkit"/>
+<fullyQualifiedTypeName name="javax.swing.Timer"/>
 </qualifiedTypeNameHistroy>

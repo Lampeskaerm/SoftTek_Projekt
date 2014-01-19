@@ -105,8 +105,8 @@ public class Ghost extends Objects{
 	                        Array[25][14] = "blackSpace"; 
 	                        setAllFalse();
 	                        
-//	                    }else if(Array[pos.x + 1][pos.y].contains("Ghost")){ 
-//	                        ghost = "left"; 
+	                    }else if(Array[pos.x + 1][pos.y].contains("Ghost")){ 
+	                        ghost = "left"; 
 	                        
 	                    }else if(Array[pos.x - 1][pos.y].equals("pacMan")){
 							if(!Model.godMode){
@@ -197,8 +197,8 @@ public class Ghost extends Objects{
 	                        Array[25][14] = ghostColor + "Ghost";  
 	                        setAllFalse();
 	                        
-//	                    }else if(Array[pos.x - 1][pos.y].contains("Ghost")){ 
-//	                        ghost = "left"; 
+	                    }else if(Array[pos.x - 1][pos.y].contains("Ghost")){ 
+	                        ghost = "left"; 
 	                        
 	                    }else if(Array[pos.x - 1][pos.y].equals("pacMan")){
 							if(!Model.godMode){
