@@ -111,6 +111,7 @@ public class Model extends JPanel implements Runnable {
             	fruit = true;
             	numberOfPacDotsRemaining--;
             }
+            
             if(fruit){
             	int random = (int)(Math.random() * 4 + 1);
              	if(random == 1){
@@ -180,6 +181,7 @@ public class Model extends JPanel implements Runnable {
             		Pacman.lives = 3;
             		Pacman.score = 0;
             		level = 1;
+            		ghosts.setAllFalse();
             		gameArray.restartGameArray();
             		this.Array = gameArray.Array;
             		enter = false; 
@@ -189,7 +191,7 @@ public class Model extends JPanel implements Runnable {
             if(Pacman.lives <= 0){ 
                 gameState = "gameOver"; 
             }
-			
+            
 			//update screen variables
 			this.pacmanPos = pacman.pos;
 			this.redGhostPos = ghosts.redGhost.pos;

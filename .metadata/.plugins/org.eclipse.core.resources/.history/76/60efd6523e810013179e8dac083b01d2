@@ -1,0 +1,44 @@
+package Pacman;
+
+    import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+    public class Board extends JPanel implements ActionListener {
+    	Timer timer;
+    	int i, j;
+    	SpriteLoad spriteload;
+    	
+    	public Board(Point pos, SpriteLoad spriteLoad){
+    		this.i = pos.x;
+    		this.j = pos.y;
+    		this.spriteload = spriteLoad;
+    	}
+    	
+    	public void runAnimation(){
+    		timer = new Timer(25, this);
+            timer.start();
+    	}
+    	
+    	@Override
+    	public void paintComponent(Graphics g){
+    		super.paintComponent(g);
+    		
+    		g.drawImage(spriteload.sprites[2], 18 * i + 18, 18 * j + 67, this);
+    		Toolkit.getDefaultToolkit().sync();
+    		g.dispose();
+    	}
+    	
+    	@Override
+    	public void actionPerformed(ActionEvent e){
+    		
+    		i += 1;
+    		
+    		repaint();
+    	}
+    }
