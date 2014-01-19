@@ -79,6 +79,7 @@ public class GhostsCalls {
         	redNotPresent++;
             if(redNotPresent == 100){
             	Array[(int)(Width / 2)][(int)(Height / 2 - 2)] = "redGhostAndBlackSpace";  
+            	System.out.println("not here");
             	redNotPresent = 0;
             }
         } 

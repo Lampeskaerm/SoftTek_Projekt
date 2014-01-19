@@ -1,9 +1,0 @@
-package Pacman;
-
-public class Objects {
-	Point pos;
-	
-	public Objects(Point pos){
-		this.pos = pos;
-	}
-}
